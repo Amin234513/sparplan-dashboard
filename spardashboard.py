@@ -4,7 +4,7 @@ import pandas as pd
 
 # === FANCY DESIGN-KONFIGURATION (Anpassbar) ===
 THEME = "midnight_blue"  # Optionen: aurora_purple, emerald_green, sunset_orange
-BACKGROUND_IMAGE = "https://example.com/abstract-gradient.jpg"  # Optional
+BACKGROUND_IMAGE = "https://ibb.co/Jwr9zKp7"  # Optional
 
 # === DASHBOARD-AUFBAU ===
 st.set_page_config(layout="wide", page_title="💰 Finanz-Magie", page_icon="✨")

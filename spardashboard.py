@@ -71,6 +71,3 @@ with col3:
 
 st.plotly_chart(fig1, use_container_width=True)
 st.plotly_chart(fig2, use_container_width=True)
-
-# === DESIGNER-TIPP ===
-st.success("💡 Tipp: Mit **Midjourney** generierte Hintergrundbilder (z.B. 'financial abstract gradient') machen das Dashboard noch edler! :cite[6]")

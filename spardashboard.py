@@ -8,6 +8,7 @@ import base64
 from fpdf import FPDF
 import math
 import random
+import time  # Fehlenden Import hinzugefügt
 
 # ===== REVOLUTIONÄRES DESIGN =====
 st.set_page_config(
@@ -25,6 +26,7 @@ dark_bg = "#0a081f"
 card_bg = "rgba(20, 15, 45, 0.85)"
 text_light = "#f0f4ff"
 
+# CSS mit korrigierten geschweiften Klammern
 st.markdown(f"""
 <style>
 :root {{
@@ -322,12 +324,12 @@ h2 {{
     border-radius: 30px 30px 0 0;
 }}
 
-/* Animations */
-@keyframes float {
+/* Animations mit korrigierten Klammern */
+@keyframes float {{
     0% {{ transform: translateY(0px); }}
     50% {{ transform: translateY(-10px); }}
     100% {{ transform: translateY(0px); }}
-}
+}}
 
 .floating {{
     animation: float 4s ease-in-out infinite;

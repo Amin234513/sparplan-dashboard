@@ -399,4 +399,4 @@ def ebook_page():
             expenses = st.number_input("Lebenshaltungskosten (€)", 500, 10000, 1800)
             savings = income - expenses
             savings_rate = savings / income * 100 if income != 0 else 0
-            st.metric("Sparquote", f"{savings_rate:.1f}%", f"{savings:,.0f}€
+            st.metric("Sparquote", f"{savings_rate:.1f}%", f"{savings:,.0f}€")

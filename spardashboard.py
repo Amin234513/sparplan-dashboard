@@ -185,6 +185,7 @@ body {
     overflow-y: auto;
     transition: transform 0.3s ease;
     box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+    transform: translateX(100%);
 }
 
 .ki-header {
@@ -219,6 +220,14 @@ body {
     background: var(--dark-2);
     padding: 15px 0;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: var(--light-text);
+    font-size: 1.5rem;
+    cursor: pointer;
 }
 </style>
 """
@@ -299,7 +308,7 @@ def dashboard():
                 xaxis_title="Jahre",
                 yaxis_title="Vermögen (€)",
                 template="plotly_dark",
-                height: 350,
+                height=350,
                 margin=dict(l=0, r=0, b=0, t=40)
             )
             st.plotly_chart(fig, use_container_width=True)
@@ -655,14 +664,16 @@ def finanzziele():
 def ki_assistent():
     """KI-Assistent in rechter Seitenleiste"""
     if "chat_history" not in st.session_state:
-        st.session_state.chat_history = []
+        st.session_state.chat_history = [
+            {"role": "assistant", "content": "Hallo! Ich bin dein NEXUS KI-Assistent. Wie kann ich dir bei deinen Finanzen helfen?"}
+        ]
     
     # KI-Assistent Panel
     st.markdown("""
-    <div class="ki-panel">
+    <div class="ki-panel" id="ki-panel">
         <div class="ki-header">
             <h3>🤖 NEXUS KI-Assistent</h3>
-            <button onclick="document.querySelector('.ki-panel').style.transform = 'translateX(100%)';">✕</button>
+            <button class="close-btn" onclick="document.getElementById('ki-panel').style.transform = 'translateX(100%)';">✕</button>
         </div>
         
         <div class="ki-messages">
@@ -689,9 +700,11 @@ def ki_assistent():
         <div class="ki-input-container">
     """, unsafe_allow_html=True)
     
-    if prompt := st.text_input("Stelle deine Finanzfrage...", key="ki_input"):
+    user_input = st.text_input("Stelle deine Finanzfrage...", key="ki_input", label_visibility="collapsed")
+    
+    if user_input:
         # Benutzernachricht hinzufügen
-        st.session_state.chat_history.append({"role": "user", "content": prompt})
+        st.session_state.chat_history.append({"role": "user", "content": user_input})
         
         # KI-Antwort generieren (simuliert)
         with st.spinner("KI denkt nach..."):
@@ -725,7 +738,7 @@ def main():
     <div style="position: fixed; top: 20px; right: 20px; z-index: 99;">
         <button style="background: #2575fc; color: white; border: none; border-radius: 50px; 
                        padding: 10px 20px; font-weight: 500; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.2);"
-                onclick="document.querySelector('.ki-panel').style.transform = 'translateX(0)';">
+                onclick="document.getElementById('ki-panel').style.transform = 'translateX(0)';">
             🤖 KI-Assistent öffnen
         </button>
     </div>

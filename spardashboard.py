@@ -4,12 +4,9 @@ import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 from datetime import datetime, timedelta
-import base64
-from fpdf import FPDF
 import math
 import random
 import time
-import openai
 
 # ===== KONFIGURATION =====
 st.set_page_config(
@@ -34,6 +31,7 @@ DARK_BG = """
 body {
     background: radial-gradient(circle at 10% 20%, var(--dark-bg) 0%, #050417 100%) !important;
     color: var(--text-light) !important;
+    font-family: 'Inter', sans-serif;
 }
 
 .stApp {
@@ -55,26 +53,81 @@ h1, h2, h3, h4, h5, h6 {
 .st-bq {
     color: var(--text-light) !important;
 }
+
+/* Card Styling */
+.card {
+    background: var(--card-bg) !important;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(94, 23, 235, 0.4);
+}
+
+/* Button Styling */
+.stButton>button {
+    background: linear-gradient(90deg, var(--primary), var(--secondary)) !important;
+    color: white !important;
+    border: none;
+    border-radius: 30px;
+    padding: 10px 20px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.stButton>button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(94, 23, 235, 0.4);
+}
+
+/* Tab Styling */
+[data-baseweb="tab-list"] {
+    gap: 10px;
+}
+
+[data-baseweb="tab"] {
+    background: rgba(30, 20, 60, 0.5) !important;
+    border-radius: 10px !important;
+    padding: 10px 20px !important;
+    transition: all 0.3s ease !important;
+}
+
+[data-baseweb="tab"]:hover {
+    background: rgba(94, 23, 235, 0.3) !important;
+}
+
+[aria-selected="true"] {
+    background: linear-gradient(90deg, var(--primary), var(--secondary)) !important;
+    color: white !important;
+    font-weight: bold !important;
+}
 </style>
 """
 st.markdown(DARK_BG, unsafe_allow_html=True)
 
-# ===== KI-FUNKTIONALITÄT =====
+# ===== SIMULIERTE KI-FUNKTIONALITÄT =====
 def get_ai_response(prompt):
-    """Holt eine KI-Antwort von der OpenAI API"""
-    try:
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": "Du bist ein Finanzberater, der Nutzern bei Investitionen und Sparplänen hilft."},
-                {"role": "user", "content": prompt}
-            ],
-            max_tokens=250,
-            temperature=0.7
-        )
-        return response.choices[0].message['content'].strip()
-    except Exception as e:
-        return f"KI-Fehler: {str(e)}. Bitte versuche es später erneut."
+    """Simulierte KI-Antworten für Finanzfragen"""
+    time.sleep(1)  # Simuliere Denkzeit
+    
+    finanzwissen = [
+        "Für eine solide Basis empfehle ich: 50% MSCI World ETF, 30% Staatsanleihen, 20% Edelmetalle.",
+        "Mit 500€ monatlich: 300€ in einen globalen ETF, 100€ in Technologie-ETFs, 100€ als Notfallreserve.",
+        "Dein Portfolio sollte zu deiner Risikotoleranz passen. Für konservative Anleger: 70% Anleihen, 30% Aktien.",
+        "Zuerst einen Notfallfonds mit 3 Monatsausgaben aufbauen, dann in kostengünstige ETFs investieren.",
+        "Die 50-30-20 Regel: 50% des Einkommens für Bedürfnisse, 30% für Wünsche, 20% zum Sparen und Investieren.",
+        "Steuern sparen durch Freistellungsauftrag (aktuell 1000€ pro Jahr) und langfristige Haltefristen nutzen.",
+        "Für passives Einkommen: Dividenden-ETFs mit mindestens 3% Ausschüttungsrendite und REITs in Betracht ziehen.",
+        "Kosten senken durch Neobroker mit 0€ Ordergebühren und ETFs mit TER unter 0.2%."
+    ]
+    
+    return random.choice(finanzwissen)
 
 # ===== HAUPTSECTIONEN =====
 def wealth_academy():
@@ -84,47 +137,71 @@ def wealth_academy():
     
     with st.expander("💰 Grundlagen der Geldanlage", expanded=False):
         st.markdown("""
-        ### Lektion 1: Die Macht des Zinseszinses
-        - **Das achte Weltwunder**: Wie kleine Beträge zu großem Vermögen werden
-        - **Zeit ist Geld**: Warum du heute beginnen solltest
-        - **Praxisbeispiel**: 
-            - 100€ monatlich bei 7% Rendite
-            - Ergebnis nach 30 Jahren: **122.000€**
-        """)
+        <div class="card">
+        <h3>Lektion 1: Die Macht des Zinseszinses</h3>
+        <p><strong>Das achte Weltwunder</strong>: Wie kleine Beträge zu großem Vermögen werden</p>
+        <p><strong>Zeit ist Geld</strong>: Warum du heute beginnen solltest</p>
+        <p><strong>Praxisbeispiel</strong>: 100€ monatlich bei 7% Rendite</p>
+        </div>
+        """, unsafe_allow_html=True)
         
         if st.button("Beispiel berechnen", key="calc_interest"):
             capital = 100 * (((1 + 0.07/12)**(12*30) - 1) / (0.07/12))
-            st.success(f"Ergebnis: {capital:,.0f}€")
+            st.success(f"Ergebnis nach 30 Jahren: **{capital:,.0f}€**")
     
     with st.expander("📈 ETF-Strategien für Einsteiger", expanded=False):
         st.markdown("""
-        ### Die 3 Säulen der ETF-Strategie
-        1. **Diversifikation**: Streuung über Märkte und Sektoren
-        2. **Kostenbewusstsein**: TER unter 0.2% anstreben
-        3. **Konsistenz**: Monatlich investieren, egal wie der Markt steht
-        
-        ```python
-        # Beispiel-Portfolio
-        portfolio = {
-            "MSCI World": 60,
-            "Emerging Markets": 20,
-            "Technologie-ETF": 15,
-            "Nachhaltigkeits-ETF": 5
-        }
-        ```
-        """)
+        <div class="card">
+        <h3>Die 3 Säulen der ETF-Strategie</h3>
+        <ol>
+            <li><strong>Diversifikation</strong>: Streuung über Märkte und Sektoren</li>
+            <li><strong>Kostenbewusstsein</strong>: TER unter 0.2% anstreben</li>
+            <li><strong>Konsistenz</strong>: Monatlich investieren, egal wie der Markt steht</li>
+        </ol>
+        <p>Beispiel-Portfolio:</p>
+        <ul>
+            <li>60% MSCI World ETF</li>
+            <li>20% Emerging Markets ETF</li>
+            <li>15% Technologie-ETF</li>
+            <li>5% Nachhaltigkeits-ETF</li>
+        </ul>
+        </div>
+        """, unsafe_allow_html=True)
     
     with st.expander("🏠 Immobilien vs. Aktien", expanded=False):
         st.markdown("""
-        | Parameter          | Immobilien       | Aktien           |
-        |--------------------|------------------|------------------|
-        | Renditeerwartung   | 3-5% p.a.        | 7-9% p.a.        |
-        | Liquidität         | Niedrig          | Hoch             |
-        | Mindestinvestment  | Hoch (>50.000€)  | Niedrig (>25€)   |
-        | Arbeitsaufwand     | Hoch             | Niedrig          |
-        | Diversifikation    | Schwierig        | Einfach          |
-        """)
-        st.info("💡 Für die meisten Anleger ist eine Kombination aus beiden sinnvoll!")
+        <div class="card">
+        <h3>Vergleich der Anlageklassen</h3>
+        <table style="width:100%; border-collapse: collapse; margin-top:15px;">
+            <tr style="background: rgba(94, 23, 235, 0.2);">
+                <th style="padding:10px; text-align:left;">Parameter</th>
+                <th style="padding:10px; text-align:left;">Immobilien</th>
+                <th style="padding:10px; text-align:left;">Aktien</th>
+            </tr>
+            <tr>
+                <td style="padding:10px; border-bottom:1px solid rgba(255,255,255,0.1);">Renditeerwartung</td>
+                <td style="padding:10px; border-bottom:1px solid rgba(255,255,255,0.1);">3-5% p.a.</td>
+                <td style="padding:10px; border-bottom:1px solid rgba(255,255,255,0.1);">7-9% p.a.</td>
+            </tr>
+            <tr>
+                <td style="padding:10px; border-bottom:1px solid rgba(255,255,255,0.1);">Liquidität</td>
+                <td style="padding:10px; border-bottom:1px solid rgba(255,255,255,0.1);">Niedrig</td>
+                <td style="padding:10px; border-bottom:1px solid rgba(255,255,255,0.1);">Hoch</td>
+            </tr>
+            <tr>
+                <td style="padding:10px; border-bottom:1px solid rgba(255,255,255,0.1);">Mindestinvestment</td>
+                <td style="padding:10px; border-bottom:1px solid rgba(255,255,255,0.1);">Hoch (>50.000€)</td>
+                <td style="padding:10px; border-bottom:1px solid rgba(255,255,255,0.1);">Niedrig (>25€)</td>
+            </tr>
+            <tr>
+                <td style="padding:10px;">Diversifikation</td>
+                <td style="padding:10px;">Schwierig</td>
+                <td style="padding:10px;">Einfach</td>
+            </tr>
+        </table>
+        <p style="margin-top:15px;">💡 Für die meisten Anleger ist eine Kombination aus beiden sinnvoll!</p>
+        </div>
+        """, unsafe_allow_html=True)
 
 def ki_assistant():
     """Interaktiver KI-Vermögensassistent"""
@@ -164,17 +241,18 @@ def portfolio_analysis():
     # Portfolio-Eingabe
     col1, col2 = st.columns(2)
     with col1:
-        st.subheader("Dein aktuelles Portfolio")
-        etf = st.number_input("ETF-Anteil (%)", 0, 100, 40)
-        aktien = st.number_input("Einzelaktien (%)", 0, 100, 20)
-        krypto = st.number_input("Krypto (%)", 0, 100, 10)
-        immobilien = st.number_input("Immobilien (%)", 0, 100, 20)
-        andere = st.number_input("Andere (%)", 0, 100, 10)
-        
-        # Validierung
-        total = etf + aktien + krypto + immobilien + andere
-        if total != 100:
-            st.error(f"Summe muss 100% betragen! Aktuell: {total}%")
+        with st.container():
+            st.subheader("Dein aktuelles Portfolio")
+            etf = st.slider("ETF-Anteil (%)", 0, 100, 40)
+            aktien = st.slider("Einzelaktien (%)", 0, 100, 20)
+            krypto = st.slider("Krypto (%)", 0, 100, 10)
+            immobilien = st.slider("Immobilien (%)", 0, 100, 20)
+            andere = st.slider("Andere (%)", 0, 100, 10)
+            
+            # Validierung
+            total = etf + aktien + krypto + immobilien + andere
+            if total != 100:
+                st.error(f"Summe muss 100% betragen! Aktuell: {total}%")
     
     with col2:
         st.subheader("Optimierungsvorschlag")
@@ -210,16 +288,21 @@ def portfolio_analysis():
         st.plotly_chart(fig, use_container_width=True)
     
     # Empfehlungen
-    st.subheader("Optimierungsempfehlungen")
-    st.markdown("""
-    - **ETF-Anteil erhöhen**: Reduziere Einzelaktien um 5%, erhöhe ETFs auf 50%
-    - **Krypto reduzieren**: Maximal 5% für hochriskante Anlagen
-    - **Immobilien diversifizieren**: Betrachte REITs statt direkte Investments
-    - **Notfallfonds prüfen**: 3-6 Monatsausgaben in liquiden Mitteln
-    """)
-    
-    if st.button("🚀 Portfolio optimieren"):
-        st.success("Optimierung durchgeführt! Dein neues Portfolio wurde gespeichert.")
+    with st.container():
+        st.subheader("Optimierungsempfehlungen")
+        st.markdown("""
+        <div class="card">
+        <ul>
+            <li><strong>ETF-Anteil erhöhen</strong>: Reduziere Einzelaktien um 5%, erhöhe ETFs auf 50%</li>
+            <li><strong>Krypto reduzieren</strong>: Maximal 5% für hochriskante Anlagen</li>
+            <li><strong>Immobilien diversifizieren</strong>: Betrachte REITs statt direkte Investments</li>
+            <li><strong>Notfallfonds prüfen</strong>: 3-6 Monatsausgaben in liquiden Mitteln</li>
+        </ul>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        if st.button("🚀 Portfolio optimieren", use_container_width=True):
+            st.success("Optimierung durchgeführt! Dein neues Portfolio wurde gespeichert.")
 
 def sparplan_rechner():
     """Sparplan Rechner mit Visualisierung"""
@@ -239,7 +322,7 @@ def sparplan_rechner():
         inflation = st.slider("Erwartete Inflation p.a. (%)", 0.0, 10.0, 2.0)
     
     # Berechnung
-    if st.button("Berechne Vermögensentwicklung"):
+    if st.button("Berechne Vermögensentwicklung", use_container_width=True):
         with st.spinner("Berechne Projektion..."):
             # Daten für die Darstellung
             jahre = list(range(zeitraum + 1))
@@ -302,78 +385,99 @@ def sparplan_rechner():
             - Zinseszins-Effekt: **{(endvermoegen - startkapital - (monatlich * 12 * zeitraum)):,.0f}€**
             """)
 
-def main_navigation():
-    """Hauptnavigation der App"""
-    st.sidebar.title("NEXUS Wealth")
-    st.sidebar.image("https://cdn.pixabay.com/photo/2017/01/08/21/37/flame-1964066_1280.png", width=80)
+# ===== DASHBOARD =====
+def dashboard():
+    """Hauptdashboard mit Finanzübersicht"""
+    st.title("💫 NEXUS Wealth Dashboard")
+    st.subheader("Dein Weg zur finanziellen Freiheit")
     
-    page = st.sidebar.radio("Navigation", [
-        "🏠 Dashboard", 
-        "🤖 KI-Assistent", 
-        "📊 Portfolio Analyse", 
-        "💶 Sparplan Rechner",
-        "📚 Wealth Academy"
-    ])
+    # Kurzstatistiken
+    col1, col2, col3 = st.columns(3)
+    col1.metric("Prognostiziertes Vermögen", "284.500€", "+23%")
+    col2.metric("Sparpotential", "85€/Monat", "Optimiert")
+    col3.metric("Portfolio-Performance", "+7.2%", "1. Jahr")
     
-    # Seiteninhalt basierend auf Auswahl
-    if page == "🏠 Dashboard":
-        st.title("💫 NEXUS Wealth Dashboard")
-        st.subheader("Dein Weg zur finanziellen Freiheit")
-        
-        # Kurzstatistiken
-        col1, col2, col3 = st.columns(3)
-        col1.metric("Prognostiziertes Vermögen", "284.500€", "+23%")
-        col2.metric("Sparpotential", "85€/Monat", "Optimiert")
-        col3.metric("Portfolio-Performance", "+7.2%", "1. Jahr")
-        
-        # Aktionskarten
-        st.subheader("Deine nächsten Schritte")
-        col1, col2 = st.columns(2)
-        with col1:
-            with st.container(border=True):
-                st.markdown("### 🔄 Sparplan optimieren")
-                st.progress(65)
-                st.caption("Vervollständige deine Sparplan-Einstellungen")
-                if st.button("Jetzt optimieren", key="spar_opt"):
-                    st.session_state.page = "💶 Sparplan Rechner"
-        
-        with col2:
-            with st.container(border=True):
-                st.markdown("### 📚 Finanzwissen erweitern")
-                st.progress(30)
-                st.caption("Beginne mit Modul 1 in der Wealth Academy")
-                if st.button("Jetzt lernen", key="learn"):
-                    st.session_state.page = "📚 Wealth Academy"
-        
-        # Portfolio-Übersicht
-        st.subheader("Dein Portfolio")
-        portfolio_data = {
-            "Asset": ["ETFs", "Aktien", "Krypto", "Immobilien", "Cash"],
-            "Anteil (%)": [45, 20, 15, 15, 5],
-            "Rendite (%)": [7.2, 4.5, -2.3, 3.8, 0.5]
-        }
-        st.dataframe(portfolio_data, use_container_width=True)
-        
-    elif page == "🤖 KI-Assistent":
-        ki_assistant()
-    elif page == "📊 Portfolio Analyse":
-        portfolio_analysis()
-    elif page == "💶 Sparplan Rechner":
-        sparplan_rechner()
-    elif page == "📚 Wealth Academy":
-        wealth_academy()
+    # Aktionskarten
+    st.subheader("Deine nächsten Schritte")
+    col1, col2 = st.columns(2)
+    with col1:
+        with st.container():
+            st.markdown("""
+            <div class="card">
+            <h3>🔄 Sparplan optimieren</h3>
+            <div class="stProgress">
+                <div class="stProgressBar" style="width:65%; background:linear-gradient(90deg, #5e17eb, #2575fc); height:10px; border-radius:5px;"></div>
+            </div>
+            <p>Vervollständige deine Sparplan-Einstellungen</p>
+            </div>
+            """, unsafe_allow_html=True)
+            if st.button("Jetzt optimieren", key="spar_opt"):
+                st.session_state.page = "💶 Sparplan Rechner"
+    
+    with col2:
+        with st.container():
+            st.markdown("""
+            <div class="card">
+            <h3>📚 Finanzwissen erweitern</h3>
+            <div class="stProgress">
+                <div class="stProgressBar" style="width:30%; background:linear-gradient(90deg, #5e17eb, #2575fc); height:10px; border-radius:5px;"></div>
+            </div>
+            <p>Beginne mit Modul 1 in der Wealth Academy</p>
+            </div>
+            """, unsafe_allow_html=True)
+            if st.button("Jetzt lernen", key="learn"):
+                st.session_state.page = "📚 Wealth Academy"
+    
+    # Portfolio-Übersicht
+    st.subheader("Dein Portfolio")
+    portfolio_data = pd.DataFrame({
+        "Asset": ["ETFs", "Aktien", "Krypto", "Immobilien", "Cash"],
+        "Anteil (%)": [45, 20, 15, 15, 5],
+        "Rendite (%)": [7.2, 4.5, -2.3, 3.8, 0.5]
+    })
+    st.dataframe(portfolio_data, use_container_width=True, hide_index=True)
+    
+    # Assetverteilung
+    fig = px.pie(
+        portfolio_data, 
+        names="Asset", 
+        values="Anteil (%)",
+        title="Assetverteilung",
+        color_discrete_sequence=["#5e17eb", "#2575fc", "#00d2ff", "#9c27b0", "#4caf50"]
+    )
+    fig.update_layout(template="plotly_dark")
+    st.plotly_chart(fig, use_container_width=True)
 
 # ===== HAUPTPROGRAMM =====
 if __name__ == "__main__":
+    # Session State initialisieren
     if "page" not in st.session_state:
         st.session_state.page = "🏠 Dashboard"
     
-    # API Key für OpenAI (ersetze mit deinem eigenen Schlüssel)
-    openai.api_key = st.secrets.get("OPENAI_API_KEY", "dein-api-key-hier")
+    # Seitenleiste für Navigation
+    with st.sidebar:
+        st.title("NEXUS Wealth")
+        st.image("https://cdn.pixabay.com/photo/2016/08/24/14/29/earth-1617121_1280.png", width=80)
+        
+        # Navigation
+        st.subheader("Navigation")
+        page_options = {
+            "🏠 Dashboard": dashboard,
+            "🤖 KI-Assistent": ki_assistant,
+            "📊 Portfolio Analyse": portfolio_analysis,
+            "💶 Sparplan Rechner": sparplan_rechner,
+            "📚 Wealth Academy": wealth_academy
+        }
+        
+        page = st.radio("", list(page_options.keys()))
+        
+        # Footer
+        st.divider()
+        st.caption("© 2025 NEXUS Wealth GmbH")
+        st.caption("Finanzielles Wohlbefinden durch intelligente Technologie")
     
-    # Hauptnavigation aufrufen
-    main_navigation()
-    
-    # Footer
-    st.divider()
-    st.caption("© 2025 NEXUS Wealth GmbH | Finanzielles Wohlbefinden durch intelligente Technologie")
+    # Aktuelle Seite anzeigen
+    if page in page_options:
+        page_options[page]()
+    else:
+        dashboard()

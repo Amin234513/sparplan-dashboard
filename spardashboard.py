@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 import base64
 from fpdf import FPDF
 import tempfile
+from numpy_financial import nper  # Korrekte Import-Anweisung hinzugefügt
 
 # ===== KONSTANTEN & EINSTELLUNGEN =====
 THEME_COLORS = {
@@ -392,7 +393,7 @@ def simulation_section():
         st.metric("Eingezahltes Kapital", f"{eingezahlt:,.0f}€")
         st.metric("Zinsgewinn", f"{endguthaben - eingezahlt:,.0f}€")
     
-    # Visualisierung - KORREKTUR HIER
+    # Visualisierung
     st.subheader("Vermögensentwicklung")
     fig = go.Figure()
     fig.add_trace(go.Scatter(
@@ -401,7 +402,7 @@ def simulation_section():
         mode='lines',
         name='Prognostiziertes Vermögen',
         line=dict(color='#00d2ff', width=3)
-    ))  # Hier wurde die fehlende schließende Klammer hinzugefügt
+    ))
     fig.update_layout(
         xaxis_title="Monate",
         yaxis_title="Vermögen (€)",
@@ -488,7 +489,9 @@ def tools_section():
         monthly_savings = st.number_input("Monatliche Sparrate (€)", 100, 5000, 1000)
         
         fire_target = annual_expenses * 25
-        years = np.nper(0.06/12, -monthly_savings, -current_assets, fire_target) / 12
+        # Korrekte Verwendung der nper-Funktion aus numpy_financial
+        months = nper(0.06/12, -monthly_savings, -current_assets, fire_target)
+        years = months / 12
         st.metric("Finanzielle Freiheit erreicht in", f"{years:.1f} Jahren")
         st.metric("Benötigtes Vermögen", f"{fire_target:,.0f}€")
         
@@ -608,3 +611,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    

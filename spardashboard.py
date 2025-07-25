@@ -726,7 +726,7 @@ def simulation_section():
             st.metric("Eingezahltes Kapital", f"{eingezahlt:,.0f}€")
             st.metric("Zinsgewinn", f"{endguthaben - eingezahlt:,.0f}€")
         
-        # Visualisierung - KORREKTUR HIER
+        # Visualisierung - FEHLER BEHOBEN
         st.subheader("Vermögensentwicklung")
         fig = go.Figure()
         fig.add_trace(go.Scatter(
@@ -735,7 +735,7 @@ def simulation_section():
             mode='lines',
             name='Nominales Vermögen',
             line=dict(color='#00d2ff', width=3)
-        ))  # Korrektur: Hinzugefügte Klammer
+        ))
         
         fig.add_trace(go.Scatter(
             x=list(range(len(entwicklung_real))),
@@ -743,7 +743,7 @@ def simulation_section():
             mode='lines',
             name='Reales Vermögen (inflationsbereinigt)',
             line=dict(color='#6a11cb', width=3, dash='dash')
-        ))  # Korrektur: Hinzugefügte Klammer
+        ))
         
         fig.update_layout(
             xaxis_title="Monate",
@@ -1038,16 +1038,10 @@ def ebook_section():
             """, unsafe_allow_html=True)
             
         with col2:
-            # E-Book generieren und Download anbieten
+            # E-Book generieren und Download anbieten (optimierte Version)
             pdf = generate_ebook()
-            
-            with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmpfile:
-                pdf_bytes = pdf.output(dest='S').encode('latin1')
-                tmpfile.write(pdf_bytes)
-                tmpfile.seek(0)
-                
-                with open(tmpfile.name, "rb") as f:
-                    base64_pdf = base64.b64encode(f.read()).decode('utf-8')
+            pdf_bytes = pdf.output(dest='S').encode('latin1')
+            base64_pdf = base64.b64encode(pdf_bytes).decode('utf-8')
                     
             st.markdown(f"""
             <div style="text-align: center; margin-top: 2rem;">
@@ -1087,6 +1081,10 @@ def footer():
 
 # ===== HAUPTAPPLIKATION =====
 def main():
+    # Session State für Watchlist initialisieren
+    if 'watchlist' not in st.session_state:
+        st.session_state.watchlist = []
+    
     with st.container():
         header_section()
         features_section()

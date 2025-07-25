@@ -726,7 +726,7 @@ def simulation_section():
             st.metric("Eingezahltes Kapital", f"{eingezahlt:,.0f}€")
             st.metric("Zinsgewinn", f"{endguthaben - eingezahlt:,.0f}€")
         
-        # Visualisierung
+        # Visualisierung - KORREKTUR HIER
         st.subheader("Vermögensentwicklung")
         fig = go.Figure()
         fig.add_trace(go.Scatter(
@@ -735,7 +735,7 @@ def simulation_section():
             mode='lines',
             name='Nominales Vermögen',
             line=dict(color='#00d2ff', width=3)
-        )
+        ))  # Korrektur: Hinzugefügte Klammer
         
         fig.add_trace(go.Scatter(
             x=list(range(len(entwicklung_real))),
@@ -743,7 +743,7 @@ def simulation_section():
             mode='lines',
             name='Reales Vermögen (inflationsbereinigt)',
             line=dict(color='#6a11cb', width=3, dash='dash')
-        )
+        ))  # Korrektur: Hinzugefügte Klammer
         
         fig.update_layout(
             xaxis_title="Monate",
@@ -1101,4 +1101,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-            

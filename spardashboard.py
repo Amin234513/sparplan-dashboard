@@ -404,4 +404,4 @@ def ebook_page():
             st.markdown("### 🏆 FIRE-Erreichbarkeit")
             annual_expenses = st.number_input("Jährliche Ausgaben (€)", 10000, 100000, 30000)
             current_assets = st.number_input("Aktuelles Vermögen (€)", 0, 1000000, 50000)
-            monthly_savings = st.number_input("Monatliche Spar
+            monthly_savings = st.number_input("Monatliche Spar)

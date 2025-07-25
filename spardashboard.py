@@ -8,7 +8,7 @@ import base64
 from fpdf import FPDF
 import math
 import random
-import time  # Fehlenden Import hinzugefügt
+import time
 
 # ===== REVOLUTIONÄRES DESIGN =====
 st.set_page_config(
@@ -358,105 +358,6 @@ h2 {{
 
 # ===== REVOLUTIONÄRE FUNKTIONEN =====
 
-def generate_wealth_plan():
-    """Generiert einen personalisierten Vermögensplan als PDF"""
-    class PDF(FPDF):
-        def header(self):
-            self.set_font('Arial', 'B', 12)
-            self.cell(0, 10, 'NEXUS Wealth Plan', 0, 1, 'C')
-        
-        def footer(self):
-            self.set_y(-15)
-            self.set_font('Arial', 'I', 8)
-            self.cell(0, 10, f'Seite {self.page_no()}', 0, 0, 'C')
-            
-        def chapter_title(self, title):
-            self.set_font('Arial', 'B', 16)
-            self.set_fill_color(94, 23, 235)
-            self.cell(0, 10, title, 0, 1, 'L', 1)
-            self.ln(5)
-            
-        def chapter_body(self, body):
-            self.set_font('Arial', '', 12)
-            self.multi_cell(0, 8, body)
-            self.ln()
-
-    pdf = PDF()
-    pdf.add_page()
-    
-    # Titel
-    pdf.set_font('Arial', 'B', 28)
-    pdf.cell(0, 10, "NEXUS Wealth Plan", 0, 1, 'C')
-    pdf.ln(15)
-    
-    # Inhalte
-    chapters = {
-        "Finanzielle Freiheitsstrategie": """
-Ihr Weg zur finanziellen Unabhängigkeit in 3 Phasen:
-
-Phase 1: Fundament schaffen (1-3 Jahre)
-- Notfallfonds aufbauen (6 Monatsausgaben)
-- Hochzins-Schulden eliminieren
-- Grundlegende Sparroutine etablieren
-
-Phase 2: Vermögenswachstum (3-10 Jahre)
-- Diversifiziertes Portfolio aufbauen
-- Sparrate systematisch erhöhen
-- Passive Einkommensquellen entwickeln
-
-Phase 3: Erhalt & Genuss (10+ Jahre)
-- Entnahmestrategie implementieren
-- Steuereffizientes Portfolio-Management
-- Lebensstil anpassen
-        """,
-        
-        "Ihr Investment-Fahrplan": """
-**Aktuelle Allokation:**
-- 50% Welt-ETFs
-- 20% Immobilien-REITs
-- 15% Technologie-Sektor
-- 10% Anleihen
-- 5% Rohstoffe
-
-**Optimierte Allokation:**
-- 55% Welt-ETFs (+5%)
-- 15% Immobilien-REITs (-5%)
-- 15% Technologie-Sektor
-- 10% Anleihen
-- 5% Nachhaltigkeitsfonds (neu)
-
-**Begründung:**
-- Höhere Wachstumschancen durch stärkere Gewichtung globaler Märkte
-- Reduzierung volatiler Immobilienanteile
-- Neue Nachhaltigkeitskomponente für zukunftssichere Investitionen
-        """,
-        
-        "Monatlicher Aktionsplan": """
-1. Sparrate erhöhen von 500€ auf 650€ (+30%)
-2. Neue Sparpläne einrichten:
-   - 350€ in MSCI World ETF
-   - 150€ in Nachhaltigkeits-ETF
-   - 100€ in Technologie-ETF
-   - 50€ in Anleihenfonds
-
-3. Kostenoptimierung:
-   - Bankgebühren sparen: 8€/Monat
-   - Versicherungen optimieren: 15€/Monat
-   - Abos kündigen: 12€/Monat
-
-4. Bildung:
-   - Finanzbuchführungskurs beginnen
-   - 2 Finanzbücher pro Quartal lesen
-        """
-    }
-    
-    for title, text in chapters.items():
-        pdf.add_page()
-        pdf.chapter_title(title)
-        pdf.chapter_body(text)
-    
-    return pdf
-
 def ai_wealth_assistant():
     """Interaktiver KI-Vermögensassistent"""
     with st.expander("💬 NEXUS KI-Assistent - Frag mich alles zu deinen Finanzen", expanded=True):
@@ -500,17 +401,17 @@ def financial_health_check():
         for i, (category, values) in enumerate(categories.items()):
             with cols[i]:
                 score = min(100, int((values['current'] / values['target']) * 100))
-                st.metric(category, f"{values['current']} von {values['target']}")
+                st.metric(category, f"{values['current']}% von {values['target']}%")
                 st.progress(score/100)
         
         # Gesamtscore berechnen
         total_score = sum([min(100, int((v['current'] / v['target']) * 100)) for v in categories.values()]) // 5
         health_levels = {
-            80: ("Exzellent", "var(--success)"),
+            80: ("Exzellent", "#00e676"),
             60: ("Gut", "#4CAF50"),
-            40: ("Durchschnittlich", "var(--warning)"),
+            40: ("Durchschnittlich", "#ffca28"),
             20: ("Schwach", "#FF9800"),
-            0: ("Kritisch", "var(--error)")
+            0: ("Kritisch", "#ff5252")
         }
         
         for level, (label, color) in health_levels.items():
@@ -554,15 +455,14 @@ def wealth_projection():
         
         projections = {}
         months = years * 12
-        monthly_return = investment_return / 100 / 12
         
         for scenario, rate in scenarios.items():
             wealth = current_wealth
             growth = [wealth]
-            monthly_scenario_rate = rate / 100 / 12
+            monthly_rate = rate / 100 / 12
             
-            for month in range(months):
-                wealth = wealth * (1 + monthly_scenario_rate) + monthly_savings
+            for month in range(1, months + 1):
+                wealth = wealth * (1 + monthly_rate) + monthly_savings
                 growth.append(wealth)
             
             projections[scenario] = growth
@@ -597,7 +497,10 @@ def goal_planner():
     with st.container():
         st.subheader("🎯 Finanzziele planen")
         
-        goals = st.session_state.get("goals", [])
+        if 'goals' not in st.session_state:
+            st.session_state.goals = []
+            
+        goals = st.session_state.goals
         
         with st.expander("➕ Neues Ziel hinzufügen", expanded=False):
             with st.form("goal_form"):
@@ -626,10 +529,18 @@ def goal_planner():
         
         if goals:
             st.write("### Deine Finanzziele")
-            for goal in goals:
+            for i, goal in enumerate(goals):
                 progress = min(1.0, goal['current'] / goal['target'])
-                days_left = (datetime.strptime(goal['deadline'], "%Y-%m-%d") - datetime.now()).days
-                monthly_needed = max(0, (goal['target'] - goal['current']) / max(1, days_left/30.44))
+                deadline_date = datetime.strptime(goal['deadline'], "%Y-%m-%d")
+                days_left = (deadline_date - datetime.now()).days
+                days_left = max(0, days_left)  # Keine negativen Tage
+                
+                # Berechne monatlich benötigten Betrag
+                if days_left > 0:
+                    months_left = days_left / 30.44
+                    monthly_needed = max(0, (goal['target'] - goal['current']) / months_left)
+                else:
+                    monthly_needed = 0
                 
                 with st.container():
                     st.markdown(f"#### {goal['name']} ({goal['priority']} Priorität)")
@@ -645,22 +556,28 @@ def goal_planner():
                         st.progress(progress)
                         
                         st.markdown(f"**Zeitplan** ({days_left} Tage verbleibend)")
+                        max_val = max(5, days_left/365 + 2)
                         fig = go.Figure(go.Indicator(
                             mode="gauge+number",
                             value=days_left/365,
                             number={'suffix': " Jahre"},
                             domain={'x': [0, 1], 'y': [0, 1]},
                             gauge={
-                                'axis': {'range': [0, max(5, days_left/365 + 2)]},
+                                'axis': {'range': [0, max_val]},
                                 'bar': {'color': primary_color},
                                 'steps': [
-                                    {'range': [0, max(5, days_left/365 + 2)*0.3], 'color': "#4CAF50"},
-                                    {'range': [max(5, days_left/365 + 2)*0.3, max(5, days_left/365 + 2)*0.7], 'color': "#FFC107"},
-                                    {'range': [max(5, days_left/365 + 2)*0.7, max(5, days_left/365 + 2)], 'color': "#F44336"}],
+                                    {'range': [0, max_val*0.3], 'color': "#4CAF50"},
+                                    {'range': [max_val*0.3, max_val*0.7], 'color': "#FFC107"},
+                                    {'range': [max_val*0.7, max_val], 'color': "#F44336"}],
                             }
                         ))
                         fig.update_layout(height=200, margin=dict(l=0, r=0, b=0, t=0))
                         st.plotly_chart(fig, use_container_width=True)
+                        
+                    # Löschen-Button für jedes Ziel
+                    if st.button(f"Ziel löschen: {goal['name']}", key=f"delete_{i}"):
+                        st.session_state.goals.remove(goal)
+                        st.experimental_rerun()
 
 def smart_saving_tips():
     """Intelligente Spartipps mit personalisierten Empfehlungen"""
@@ -744,7 +661,7 @@ def hero_section():
                     persönlichen Strategien für finanzielle Unabhängigkeit.
                 </p>
                 
-                <button class="cta-button">Jetzt kostenlos starten</button>
+                <button class="cta-button" onclick="window.scrollTo({{top: document.body.scrollHeight, behavior: 'smooth'}})">Jetzt kostenlos starten</button>
                 
                 <div class="stats-container">
                     <div class="stat-card floating">
@@ -770,42 +687,12 @@ def features_section():
         st.markdown('<div class="section-title">Revolutionäre Funktionen</div>', unsafe_allow_html=True)
         
         features = [
-            {
-                "icon": "🤖",
-                "title": "KI-Vermögensassistent",
-                "desc": "24/7 persönliche Beratung durch unseren KI-Finanzexperten",
-                "color": primary_color
-            },
-            {
-                "icon": "📊",
-                "title": "Echtzeit-Finanzcheck",
-                "desc": "Umfassende Analyse deiner finanziellen Gesundheit mit Handlungsempfehlungen",
-                "color": secondary_color
-            },
-            {
-                "icon": "🚀",
-                "title": "Vermögensprojektion",
-                "desc": "Interaktive Simulation verschiedener Zukunftsszenarien für deine Finanzen",
-                "color": accent_color
-            },
-            {
-                "icon": "🎯",
-                "title": "Zielplaner",
-                "desc": "Definiere und verfolge deine finanziellen Meilensteine mit dynamischen Plänen",
-                "color": "#9C27B0"
-            },
-            {
-                "icon": "💡",
-                "title": "Intelligente Spartipps",
-                "desc": "Personalisiertes Sparpotenzial in allen Lebensbereichen",
-                "color": "#FF9800"
-            },
-            {
-                "icon": "📚",
-                "title": "Wealth Academy",
-                "desc": "Interaktive Lernmodule für finanzielle Bildung und Investment-Wissen",
-                "color": "#4CAF50"
-            }
+            {"icon": "🤖", "title": "KI-Vermögensassistent", "desc": "24/7 persönliche Beratung durch unseren KI-Finanzexperten"},
+            {"icon": "📊", "title": "Echtzeit-Finanzcheck", "desc": "Umfassende Analyse deiner finanziellen Gesundheit mit Handlungsempfehlungen"},
+            {"icon": "🚀", "title": "Vermögensprojektion", "desc": "Interaktive Simulation verschiedener Zukunftsszenarien für deine Finanzen"},
+            {"icon": "🎯", "title": "Zielplaner", "desc": "Definiere und verfolge deine finanziellen Meilensteine mit dynamischen Plänen"},
+            {"icon": "💡", "title": "Intelligente Spartipps", "desc": "Personalisiertes Sparpotenzial in allen Lebensbereichen"},
+            {"icon": "📚", "title": "Wealth Academy", "desc": "Interaktive Lernmodule für finanzielle Bildung und Investment-Wissen"}
         ]
         
         st.markdown('<div class="feature-grid">', unsafe_allow_html=True)

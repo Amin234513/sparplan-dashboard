@@ -7,7 +7,6 @@ from datetime import datetime, timedelta
 import math
 import random
 import time
-import openai  # Für intelligentere KI-Antworten
 
 # ===== SCHLICHTES DUNKLES DESIGN =====
 st.set_page_config(
@@ -255,10 +254,6 @@ body {
 </style>
 """
 st.markdown(DARK_DESIGN, unsafe_allow_html=True)
-
-# OpenAI API Setup (ersetze mit deinem eigenen API-Schlüssel)
-#openai.api_key = st.secrets["OPENAI_API_KEY"]
-openai.api_key = "dein-api-schluessel-hier"  # Für lokale Tests
 
 # ===== FUNKTIONEN =====
 def dashboard():
@@ -688,37 +683,61 @@ def finanzziele():
                         st.markdown(f"**Fortschritt** ({progress*100:.1f}%)")
                         st.progress(progress)
 
-# ===== INTELLIGENTE KI-FUNKTION =====
+# ===== INTELLIGENTE LOKALE KI-FUNKTION =====
 def get_ai_response(user_input):
-    """Hole intelligente Antwort von der OpenAI API"""
-    try:
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": "Du bist ein Finanzberater, der klare, präzise Ratschläge zu Sparplänen, Investitionen und persönlichen Finanzen gibt. Deine Antworten sollten auf Fakten basieren und für den deutschen Markt relevant sein. Sei ermutigend und professionell."},
-                {"role": "user", "content": user_input}
-            ],
-            max_tokens=300,
-            temperature=0.7
-        )
-        return response.choices[0].message['content'].strip()
-    
-    except Exception as e:
-        print(f"Fehler bei der OpenAI-Anfrage: {e}")
-        # Fallback-Antworten
-        fallback_responses = [
-            "Entschuldigung, ich konnte Ihre Frage nicht verarbeiten. Könnten Sie es bitte anders formulieren?",
-            "Leider ist ein technisches Problem aufgetreten. Bitte versuchen Sie es später erneut.",
-            "Ich habe Schwierigkeiten, Ihre Anfrage zu verstehen. Könnten Sie etwas mehr Kontext geben?",
-            "Aktuell kann ich diese Frage nicht beantworten. Bitte stellen Sie eine andere Finanzfrage."
+    """Intelligente Finanzberatung ohne externe API"""
+    finanzwissen = {
+        "sparplan": [
+            "Für den Einstieg empfehle ich: 60% MSCI World ETF (IE00B4L5Y983), 20% Emerging Markets (IE00BKM4GZ66), 15% Technologie-ETF (IE00BYVQ8C80), 5% Krypto. Monatlich 300-500€ sparen.",
+            "Ein guter Sparplan: 70% MSCI World, 20% Anleihen-ETF, 10% REITs. Mit 500€ monatlich können Sie in 20 Jahren etwa 250.000€ ansparen (bei 6% Rendite).",
+            "Sparplan-Optimierung: Verteilen Sie Ihr Investment auf 3 ETFs: Weltaktien (50%), Schwellenländer (30%), Dividenden-ETF (20%)."
+        ],
+        "etf": [
+            "Top ETFs 2024: iShares Core MSCI World (IE00B4L5Y983), Vanguard FTSE All-World (IE00B3RBWM25), Xtrackers MSCI World Technology (IE00BMVB5R75). TER <0.2%.",
+            "Günstige ETFs: Amundi Prime Global (LU2089238203) mit 0.05% TER, Xtrackers MSCI World (IE00BK1PV551) mit 0.12% TER.",
+            "Dividenden-ETFs: iShares STOXX Global Select Dividend (DE0002635281), Fidelity Global Quality Income (IE00BYXVGX24)."
+        ],
+        "portfolio": [
+            "Portfolio-Optimierung: Erhöhen Sie den ETF-Anteil auf 50-60%, reduzieren Sie Einzelaktien auf 15-20%, halten Sie Krypto unter 10%.",
+            "Ein ausgewogenes Portfolio: 50% ETFs, 20% Anleihen, 15% Immobilien (REITs), 10% Edelmetalle, 5% Krypto.",
+            "Für Risikobereite: 70% Wachstums-ETFs, 20% Einzelaktien (Tech), 10% Krypto. Für Sicherheit: 60% Anleihen, 30% ETFs, 10% Cash."
+        ],
+        "kosten": [
+            "Kosten senken: Nutzen Sie Neobroker (1€/Sparplan), wählen Sie ETFs mit TER <0.2%, vermeiden Sie aktiv gemanagte Fonds (>1% Gebühren).",
+            "Steuern sparen: Nutzen Sie den Sparer-Pauschbetrag von 1000€ pro Jahr, halten Sie Anlagen >1 Jahr für Steuerfreiheit.",
+            "Bankkosten: Wechseln Sie zu Direktbanken, die keine Depotgebühren verlangen und günstige Sparpläne anbieten."
+        ],
+        "einkommen": [
+            "Passives Einkommen aufbauen: Investieren Sie in Dividenden-ETFs mit 3-5% Ausschüttung. Bei 200.000€ Investment: 6000-10.000€/Jahr.",
+            "REITs für Immobilien-Rendite: Vonovia REIT (DE000A1ML7J1) mit 4-6% Dividende, Realty Income (US7561091049) mit monatlicher Ausschüttung.",
+            "Anleihen-ETF für regelmäßiges Einkommen: iShares Global Government Bond (IE00B1FZS798) mit 3-4% Rendite."
+        ],
+        "allgemein": [
+            "Finanziell unabhängig werden: Sparen Sie 25-50% Ihres Einkommens, investieren Sie langfristig in breit gestreute ETFs.",
+            "Notfallfonds: Halten Sie 3-6 Monatsausgaben auf einem Tagesgeldkonto bereit. Mindestens 5000€ für unerwartete Ausgaben.",
+            "Altersvorsorge: Nutzen Sie staatliche Förderungen wie Riester-Rente, besonders wenn Sie Kinder haben oder niedrige Einkommen."
         ]
-        return random.choice(fallback_responses)
+    }
+    
+    # Schlüsselwörter erkennen
+    if "sparplan" in user_input.lower():
+        return random.choice(finanzwissen["sparplan"])
+    elif "etf" in user_input.lower():
+        return random.choice(finanzwissen["etf"])
+    elif "portfolio" in user_input.lower():
+        return random.choice(finanzwissen["portfolio"])
+    elif "kosten" in user_input.lower() or "gebühren" in user_input.lower():
+        return random.choice(finanzwissen["kosten"])
+    elif "einkommen" in user_input.lower() or "dividenden" in user_input.lower():
+        return random.choice(finanzwissen["einkommen"])
+    else:
+        return random.choice(finanzwissen["allgemein"])
 
 def ki_assistent():
     """KI-Assistent in rechter Seitenleiste"""
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = [
-            {"role": "assistant", "content": "Hallo! Ich bin dein NEXUS KI-Assistent für Finanzen. Stelle mir Fragen zu Sparplänen, Investitionen oder persönlichen Finanzen. Wie kann ich dir helfen?"}
+            {"role": "assistant", "content": "Hallo! Ich bin dein NEXUS KI-Assistent für Finanzen. Stelle mir Fragen zu Sparplänen, ETFs, Portfolio-Optimierung oder passivem Einkommen. Wie kann ich dir helfen?"}
         ]
     
     # KI-Assistent Panel
@@ -761,6 +780,7 @@ def ki_assistent():
         
         # KI-Antwort generieren
         with st.spinner("KI denkt nach..."):
+            time.sleep(1)
             ai_response = get_ai_response(user_input)
             
             # KI-Antwort hinzufügen
@@ -776,7 +796,7 @@ def ki_assistent():
 
 # ===== HAUPTPROGRAMM =====
 def main():
-    # KI-Assistent-Button (weiter unten positioniert)
+    # KI-Assistent-Button (bei 100px von oben)
     st.markdown("""
     <button class="ki-button" onclick="document.getElementById('ki-panel').style.transform = 'translateX(0)';">
         🤖 KI-Assistent

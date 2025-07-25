@@ -10,8 +10,8 @@ import tempfile
 
 # ===== SEITENSTRUKTUR =====
 st.set_page_config(
-    layout="wide",
-    page_title="🚀 FIREFLY - Dein Premium Sparplan",
+    layout="wide", 
+    page_title="🚀 FIREFLY - Dein Premium Sparplan", 
     page_icon="✨",
     initial_sidebar_state="expanded"
 )
@@ -115,7 +115,7 @@ def generate_ebook():
     
     # Titel
     pdf.set_font('Arial', 'B', 24)
-    pdf.cell(0, 10, "FIREFLY Sparstrategie", 0, 1, 'C')
+    pdf.cell(0, 10, "🔥 FIREFLY Sparstrategie", 0, 1, 'C')
     pdf.ln(10)
     
     # Inhaltsverzeichnis
@@ -146,39 +146,39 @@ def generate_ebook():
         """,
         
         "Automatisierte Sparsysteme": """
-Drei-Stufen-Sparplan:
+**Drei-Stufen-Sparplan:**
 - Stufe 1: 50% in globale ETFs (MSCI World, EM)
 - Stufe 2: 30% in thematische ETFs (Tech, Nachhaltigkeit)
 - Stufe 3: 20% in Einzelaktien & Krypto
 
-Automatisierungstools:
+**Automatisierungstools:**
 - Broker: Sparpläne mit dynamischer Anpassung
 - Apps: Finanzguru, Finanzfluss, Trade Republic
 - Banken: DKB, ING, Comdirect mit kostenlosen Sparplänen
         """,
         
         "Steuertricks für Sparer": """
-Strategien:
+**Strategien:**
 - Freistellungsauftrag optimal ausnutzen (2025: 1.000€ pro Person)
 - Verluste realisieren für Steuerstundung (Tax-Loss-Harvesting)
 - Kapitalerträge in Niedrigzinsphasen realisieren
 - Ausländische Quellensteuer zurückfordern
 
-Rechtliche Rahmen:
+**Rechtliche Rahmen:**
 - 25% Abgeltungssteuer + Soli + Kirchensteuer
 - Günstigerprüfung bei niedrigem Einkommen
 - Fonds mit hoher Teilfreistellung (Aktienfonds: 30%)
         """,
         
         "ETF-Strategien 2025": """
-Top-5-ETF-Picks:
+**Top-5-ETF-Picks:**
 1. iShares Core MSCI World (Acc) - ISIN: IE00B4L5Y983
 2. Xtrackers MSCI World ESG (Acc) - ISIN: IE00BZ02LR44
 3. Amundi Nasdaq 100 (Acc) - ISIN: LU1829221024
 4. Lyxor Core STOXX Europe 600 (DR) - ISIN: LU0908500753
 5. iShares MSCI EM IMI (Acc) - ISIN: IE00BKM4GZ66
 
-Allokationsmodell:
+**Allokationsmodell:**
 - 60% Industrieländer
 - 20% Schwellenländer
 - 15% Technologie-Sektor
@@ -186,31 +186,31 @@ Allokationsmodell:
         """,
         
         "Krisensicher investieren": """
-Schutzstrategien:
+**Schutzstrategien:**
 - Gold-Allokation (5-10% des Portfolios)
 - REITs mit stabilen Mieteinnahmen
 - Konsumgüter-Aktien (Unilever, Procter & Gamble)
 - Kurzlaufende Anleihen als Puffer
 
-Risikomanagement:
+**Risikomanagement:**
 - Stopp-Loss bei 15% unter Kaufpreis
 - Portfolio-Insurance mit Put-Optionen
 - Dynamische Asset-Allokation (Gleitpfad)
         """,
         
         "Finanzielle Freiheit erreichen": """
-FIRE-Formel:
+**FIRE-Formel:**
 Vermögen = Jahresausgaben × 25
 - Beispiel: 40.000€ Ausgaben → 1.000.000€ Ziel
 
-Stufenplan:
+**Stufenplan:**
 1. Sparrate auf 50% erhöhen
 2. Nebeneinkommen entwickeln
 3. Steuern optimieren
 4. Wohnkosten reduzieren
 5. Investitionsquote erhöhen
 
-Entnahmestrategien:
+**Entnahmestrategien:**
 - 4%-Regel mit jährlicher Anpassung
 - Dynamische Entnahme (CAPE-basiert)
 - Bucket-Strategie (3-Eimer-Modell)
@@ -222,20 +222,17 @@ Entnahmestrategien:
         pdf.chapter_title(title)
         pdf.chapter_body(text)
     
-    # Cover-Design (letzte Seite)
+    # Cover-Design
     pdf.add_page()
     pdf.set_fill_color(106, 17, 203)
     pdf.rect(0, 0, 210, 297, 'F')
     pdf.set_text_color(255, 255, 255)
     pdf.set_font('Arial', 'B', 36)
-    pdf.set_xy(40, 120)
-    pdf.cell(0, 10, "FIREFLY")
+    pdf.text(40, 120, "🔥 FIREFLY")
     pdf.set_font('Arial', '', 24)
-    pdf.set_xy(30, 140)
-    pdf.cell(0, 10, "Der Premium-Sparguide für finanzielle Freiheit")
+    pdf.text(30, 140, "Der Premium-Sparguide für finanzielle Freiheit")
     pdf.set_font('Arial', '', 16)
-    pdf.set_xy(70, 260)
-    pdf.cell(0, 10, "© 2025 FIREFLY Finance - Alle Rechte vorbehalten")
+    pdf.text(70, 260, "© 2025 FIREFLY Finance - Alle Rechte vorbehalten")
     
     return pdf
 
@@ -262,7 +259,7 @@ def dashboard_page():
         'Edelmetalle': 2
     }
     fig = px.pie(
-        names=list(assets.keys()),
+        names=list(assets.keys()), 
         values=list(assets.values()),
         hole=0.4,
         color_discrete_sequence=px.colors.sequential.Viridis
@@ -280,7 +277,7 @@ def dashboard_page():
     for goal, data in goals.items():
         progress = data['current'] / data['target']
         st.markdown(f"**{goal}**")
-        st.progress(min(1.0, progress))
+        st.progress(min(1.0, progress), text=f"{data['current']:,.0f}€ / {data['target']:,.0f}€ ({progress*100:.1f}%)")
 
 def goals_page():
     st.title("🎯 Sparziel-Planung")
@@ -293,10 +290,12 @@ def goals_page():
                 goal_name = st.text_input("Zielname*", "z.B. Eigenheim, Altersvorsorge")
                 target_amount = st.number_input("Zielbetrag (€)*", 1000, 1000000, 50000)
                 priority = st.select_slider("Priorität", ["Niedrig", "Mittel", "Hoch", "Sehr hoch"])
+                
             with col2:
                 deadline = st.date_input("Zieldatum*", datetime.now() + timedelta(days=365*5))
                 current_amount = st.number_input("Aktueller Stand (€)", 0, 1000000, 5000)
                 recurring_payment = st.number_input("Monatliche Sparrate (€)", 0, 5000, 500)
+                
             if st.form_submit_button("Ziel speichern"):
                 st.success("Sparziel erfolgreich angelegt!")
     
@@ -319,9 +318,11 @@ def goals_page():
                 st.metric("Zielbetrag", f"{goal['target']:,.0f}€")
                 st.metric("Aktuell", f"{goal['current']:,.0f}€")
                 st.metric("Verbleibend", f"{goal['target'] - goal['current']:,.0f}€")
+                
             with col2:
                 st.markdown(f"**Fortschritt** ({progress*100:.1f}%)")
                 st.progress(min(1.0, progress))
+                
                 st.markdown(f"**Zeitplan** ({days_left} Tage verbleibend)")
                 fig = go.Figure(go.Indicator(
                     mode = "gauge+number",
@@ -347,20 +348,21 @@ def ebook_page():
     with col1:
         st.image("https://images.unsplash.com/photo-1545235617-9465d2a55698?auto=format&fit=crop&w=500", 
                 caption="FIREFLY Premium Guide")
+        
     with col2:
         st.markdown("""
-        ### Der ultimative Sparguide für finanzielle Freiheit
+        ### 🔥 Der ultimative Sparguide für finanzielle Freiheit
         
         Dieses exklusive E-Book enthält:
         
-        - 7 Säulen der Vermögensbildung
-        - Automatisierte Sparsysteme
-        - Steuertricks für Sparer
-        - ETF-Strategien 2025
-        - Krisensichere Anlagen
-        - FIRE-Strategie
+        - **7 Säulen der Vermögensbildung** - Fundament für finanziellen Erfolg
+        - **Automatisierte Sparsysteme** - Geld arbeiten lassen während Sie schlafen
+        - **Steuertricks für Sparer** - Legal mehr behalten
+        - **ETF-Strategien 2025** - Top-Performer für Ihr Portfolio
+        - **Krisensichere Anlagen** - Schutz für Ihre Investments
+        - **FIRE-Strategie** - Finanzielle Unabhängigkeit erreichen
         
-        Enthaltene Tools:
+        ##### Enthaltene Tools:
         - Sparquote-Rechner
         - FIRE-Erreichbarkeitsanalyse
         - Portfolio-Optimierungscheck
@@ -397,4 +399,4 @@ def ebook_page():
             expenses = st.number_input("Lebenshaltungskosten (€)", 500, 10000, 1800)
             savings = income - expenses
             savings_rate = savings / income * 100 if income != 0 else 0
-            st.metric("Sparquote", f"{savings_rate:.1f}%", f"{savings:,.0f}€")
+            st.metric("Sparquote", f"{savings_rate:.1f}%", f"{savings:,.0f}€

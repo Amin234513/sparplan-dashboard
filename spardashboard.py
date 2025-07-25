@@ -392,16 +392,16 @@ def simulation_section():
         st.metric("Eingezahltes Kapital", f"{eingezahlt:,.0f}€")
         st.metric("Zinsgewinn", f"{endguthaben - eingezahlt:,.0f}€")
     
-    # Visualisierung - HIER WAR DER FEHLER
+    # Visualisierung - KORREKTUR HIER
     st.subheader("Vermögensentwicklung")
     fig = go.Figure()
-    fig.add_trace(go.Scatter(  # Komma nach go.Scatter hinzugefügt
+    fig.add_trace(go.Scatter(
         x=list(range(len(entwicklung))),
         y=entwicklung,
         mode='lines',
         name='Prognostiziertes Vermögen',
         line=dict(color='#00d2ff', width=3)
-    )  # Hier schließt die add_trace-Methode
+    ))  # Hier wurde die fehlende schließende Klammer hinzugefügt
     fig.update_layout(
         xaxis_title="Monate",
         yaxis_title="Vermögen (€)",
@@ -516,7 +516,7 @@ def tools_section():
             "ETFs vergleichen",
             list(etfs.keys()),
             default=list(etfs.keys())
-        )  # Fehlende Klammer hinzugefügt
+        )
         
         if selected_etfs:
             df = pd.DataFrame({etf: etfs[etf] for etf in selected_etfs}).T

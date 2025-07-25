@@ -398,10 +398,3 @@ def ebook_page():
             savings = income - expenses
             savings_rate = savings / income * 100 if income != 0 else 0
             st.metric("Sparquote", f"{savings_rate:.1f}%", f"{savings:,.0f}€")
-    
-    with col2:
-        with st.container():
-            st.markdown("### 🏆 FIRE-Erreichbarkeit")
-            annual_expenses = st.number_input("Jährliche Ausgaben (€)", 10000, 100000, 30000)
-            current_assets = st.number_input("Aktuelles Vermögen (€)", 0, 1000000, 50000)
-            monthly_savings = st.number_input("Monatliche Spar)

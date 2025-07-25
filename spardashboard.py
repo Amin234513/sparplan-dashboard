@@ -8,7 +8,7 @@ import math
 import random
 import time
 
-# ===== MODERNES DUNKLES DESIGN =====
+# ===== SCHLICHTES DUNKLES DESIGN =====
 st.set_page_config(
     page_title="NEXUS Wealth",
     page_icon="💎",
@@ -16,20 +16,15 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# CSS für modernes dunkles Design
+# CSS für schlichtes dunkles Design
 DARK_DESIGN = """
 <style>
 :root {
-    --primary: #6a11cb;
-    --secondary: #2575fc;
-    --accent: #00d2ff;
-    --dark-1: #0f0c29;
-    --dark-2: #1a1935;
-    --dark-3: #24243e;
-    --light-text: #e6e6ff;
-    --success: #00e676;
-    --warning: #ffca28;
-    --danger: #ff5252;
+    --dark-1: #0a0f1f;
+    --dark-2: #121a30;
+    --dark-3: #1a2540;
+    --accent: #2575fc;
+    --light-text: #e6f0ff;
 }
 
 * {
@@ -37,7 +32,7 @@ DARK_DESIGN = """
 }
 
 body {
-    background: linear-gradient(to right, var(--dark-1), var(--dark-2)) !important;
+    background-color: var(--dark-1) !important;
     color: var(--light-text) !important;
 }
 
@@ -47,208 +42,181 @@ body {
 
 /* Header Design */
 [data-testid="stHeader"] {
-    background: rgba(15, 12, 41, 0.9) !important;
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(106, 17, 203, 0.3);
+    background-color: rgba(10, 15, 31, 0.95) !important;
+    border-bottom: 1px solid rgba(37, 117, 252, 0.2);
 }
 
 /* Sidebar Design */
 [data-testid="stSidebar"] {
-    background: linear-gradient(to bottom, var(--dark-2), var(--dark-1)) !important;
-    border-right: 1px solid rgba(106, 17, 203, 0.3);
+    background-color: var(--dark-2) !important;
+    border-right: 1px solid rgba(37, 117, 252, 0.2);
 }
 
 /* Card Design */
 .card {
-    background: linear-gradient(145deg, var(--dark-3), var(--dark-2)) !important;
-    border-radius: 16px !important;
-    padding: 24px;
+    background-color: var(--dark-3) !important;
+    border-radius: 12px !important;
+    padding: 20px;
     margin-bottom: 20px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(106, 17, 203, 0.2);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(37, 117, 252, 0.2);
+    transition: all 0.3s ease;
 }
 
 .card:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 12px 40px rgba(106, 17, 203, 0.4);
-    border: 1px solid rgba(106, 17, 203, 0.4);
+    border: 1px solid rgba(37, 117, 252, 0.4);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 /* Button Design */
 .stButton>button {
-    background: linear-gradient(90deg, var(--primary), var(--secondary)) !important;
+    background-color: var(--accent) !important;
     color: white !important;
     border: none !important;
-    border-radius: 50px !important;
-    padding: 12px 28px !important;
-    font-weight: 600 !important;
-    font-size: 1.05rem !important;
+    border-radius: 8px !important;
+    padding: 10px 20px !important;
+    font-weight: 500 !important;
     transition: all 0.3s ease !important;
-    box-shadow: 0 4px 20px rgba(106, 17, 203, 0.3);
 }
 
 .stButton>button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 25px rgba(106, 17, 203, 0.5);
+    background-color: #1c65e0 !important;
+    box-shadow: 0 2px 10px rgba(37, 117, 252, 0.3);
 }
 
 /* Slider Design */
 .stSlider .st-ae {
-    background: linear-gradient(90deg, var(--primary), var(--secondary)) !important;
+    background: var(--accent) !important;
 }
 
 .stSlider .st-af {
-    background: var(--dark-3) !important;
+    background: var(--dark-2) !important;
 }
 
 /* Progress Bar */
 .stProgress > div > div > div {
-    background: linear-gradient(90deg, var(--primary), var(--secondary)) !important;
+    background: var(--accent) !important;
 }
 
 /* Tabs */
 [data-baseweb="tab-list"] {
-    gap: 8px;
+    gap: 5px;
 }
 
 [data-baseweb="tab"] {
     background: var(--dark-3) !important;
-    border-radius: 12px !important;
-    padding: 12px 24px !important;
+    border-radius: 8px !important;
+    padding: 10px 20px !important;
     transition: all 0.3s ease !important;
+    border: 1px solid rgba(37, 117, 252, 0.2) !important;
 }
 
 [data-baseweb="tab"]:hover {
-    background: rgba(106, 17, 203, 0.3) !important;
+    background: rgba(37, 117, 252, 0.2) !important;
 }
 
 [aria-selected="true"] {
-    background: linear-gradient(90deg, var(--primary), var(--secondary)) !important;
+    background: var(--accent) !important;
     color: white !important;
-    font-weight: 600 !important;
+    font-weight: 500 !important;
+    border: 1px solid var(--accent) !important;
 }
 
 /* Metric Cards */
 .metric-card {
-    background: linear-gradient(135deg, rgba(106, 17, 203, 0.25), rgba(37, 117, 252, 0.25)) !important;
-    border-radius: 16px;
+    background-color: var(--dark-3) !important;
+    border-radius: 12px;
     padding: 20px;
     text-align: center;
-    border: 1px solid rgba(106, 17, 203, 0.3);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
-}
-
-.metric-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 40px rgba(106, 17, 203, 0.3);
+    border: 1px solid rgba(37, 117, 252, 0.2);
 }
 
 .metric-value {
-    font-size: 2.5rem;
-    font-weight: 700;
-    background: linear-gradient(90deg, var(--accent), var(--secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 8px;
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 5px;
 }
 
 .metric-label {
-    font-size: 1.1rem;
-    opacity: 0.85;
+    font-size: 1rem;
+    opacity: 0.8;
 }
 
-/* Floating Animation */
-@keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-12px); }
-    100% { transform: translateY(0px); }
+/* Input Fields */
+.stTextInput>div>div>input, 
+.stNumberInput>div>div>input, 
+.stSelectbox>div>div>select {
+    background-color: var(--dark-2) !important;
+    color: var(--light-text) !important;
+    border: 1px solid rgba(37, 117, 252, 0.2) !important;
 }
 
-.floating {
-    animation: float 6s ease-in-out infinite;
+/* Table Styling */
+.stDataFrame {
+    border: 1px solid rgba(37, 117, 252, 0.2) !important;
+    border-radius: 10px !important;
 }
 </style>
 """
 st.markdown(DARK_DESIGN, unsafe_allow_html=True)
 
-# ===== SIMULIERTE KI-FUNKTIONALITÄT =====
-def get_ai_response(prompt):
-    """Simulierte KI-Antworten für Finanzfragen mit mehr Details"""
-    time.sleep(1.5)  # Simuliere Denkzeit
-    
-    finanzwissen = [
-        f"Für deine Situation empfehle ich: 60% MSCI World ETF (ISIN: IE00B4L5Y983), 20% Emerging Markets (ISIN: IE00BKM4GZ66), 15% Technologie-ETF (ISIN: IE00BYVQBR96), und 5% Krypto via ETC. Monatliche Sparrate: {random.randint(200, 800)}€.",
-        f"Optimale Sparplan-Aufteilung: {random.randint(40, 60)}% in einen globalen ETF, {random.randint(10, 20)}% in Immobilien-REITs, {random.randint(5, 15)}% in Anleihen, und {random.randint(5, 15)}% in Einzelaktien. Vergiss nicht deinen Notfallfonds!",
-        f"Dein Portfolio sollte zu deiner Risikotoleranz passen. Für moderate Anleger: {random.randint(50, 70)}% Aktien-ETFs, {random.randint(20, 30)}% Anleihen, {random.randint(5, 10)}% Edelmetalle, und {random.randint(5, 10)}% Krypto.",
-        f"Zuerst einen Notfallfonds mit 3-6 Monatsausgaben aufbauen. Dann investieren: {random.randint(300, 700)}€ monatlich in ETFs. Top-ETFs: iShares Core MSCI World (ISIN: IE00B4L5Y983), Vanguard FTSE All-World (ISIN: IE00B3RBWM25).",
-        f"Steuern sparen: Nutze deinen Freistellungsauftrag (1000€ pro Jahr) und halte Investments >1 Jahr für Steuerfreiheit. ETFs mit thesaurierend > ausschüttend für langfristiges Wachstum.",
-        f"Für passives Einkommen: Dividenden-ETFs mit 3-5% Ausschüttung (z.B. ISIN: IE00B8GKDB10), REITs mit 4-7% Dividende, und Anleihen-ETFs. Ziel: {random.randint(500, 2000)}€ monatliches passives Einkommen.",
-        f"Kosten senken: Nutze Neobroker wie Trade Republic (1€/Sparplan), wähle ETFs mit TER <0.2%, und vermeide aktiv gemanagte Fonds. Jährliche Ersparnis: {random.randint(50, 300)}€.",
-        f"Rendite-Boost: Erhöhe deine Sparrate jährlich um {random.randint(3, 10)}%, reinvestiere Dividenden, und nutze Marktdips für Nachkäufe. Potenzieller Renditegewinn: +{random.randint(1, 3)}% p.a."
-    ]
-    
-    return random.choice(finanzwissen)
-
-# ===== DASHBOARD =====
+# ===== SEITEN =====
 def dashboard():
-    """Hauptdashboard mit Finanzübersicht"""
+    """Hauptdashboard"""
     st.title("💎 NEXUS Wealth")
-    st.subheader("Dein intelligenter Weg zur finanziellen Freiheit")
+    st.subheader("Dein Finanz-Dashboard")
     
     # Kurzstatistiken
     col1, col2, col3 = st.columns(3)
     col1.markdown("""
-    <div class="metric-card floating">
+    <div class="metric-card">
         <div class="metric-value">284.500€</div>
         <div class="metric-label">Prognostiziertes Vermögen</div>
-        <div style="color: var(--success); font-weight:600;">+23%</div>
     </div>
     """, unsafe_allow_html=True)
     
     col2.markdown("""
-    <div class="metric-card floating" style="animation-delay:0.3s">
+    <div class="metric-card">
         <div class="metric-value">85€/Monat</div>
         <div class="metric-label">Sparpotential</div>
-        <div style="color: var(--accent); font-weight:600;">Optimiert</div>
     </div>
     """, unsafe_allow_html=True)
     
     col3.markdown("""
-    <div class="metric-card floating" style="animation-delay:0.6s">
+    <div class="metric-card">
         <div class="metric-value">7.2%</div>
         <div class="metric-label">Portfolio-Performance</div>
-        <div style="color: var(--success); font-weight:600;">1. Jahr</div>
     </div>
     """, unsafe_allow_html=True)
     
     # Sparplan-Optimierung
-    st.subheader("💸 Sparplan Optimierung")
-    col1, col2, col3 = st.columns([1, 2, 1])
+    st.subheader("Sparplan Optimierung")
+    col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("### Aktuelle Sparrate")
-        current_rate = st.number_input("Monatliche Sparrate (€)", 50, 5000, 300, key="current_rate")
-        
-        st.markdown("### Ziel-Vermögen")
-        target_wealth = st.number_input("Zielbetrag (€)", 10000, 5000000, 250000, key="target_wealth")
-    
-    with col2:
-        # Vermögensentwicklung
-        years = st.slider("Zeithorizont (Jahre)", 5, 40, 15)
-        return_rate = st.slider("Erwartete Rendite p.a. (%)", 1.0, 15.0, 6.8, 0.1)
+        monthly_savings = st.number_input("Monatliche Sparrate (€)", 50, 5000, 300)
+        years = st.slider("Ansparzeit (Jahre)", 5, 40, 15)
+        return_rate = st.slider("Erwartete Rendite (%)", 1.0, 15.0, 6.5, 0.1)
         
         # Berechnung
         monthly_return = return_rate / 100 / 12
         months = years * 12
-        future_value = current_rate * (((1 + monthly_return)**months - 1) / monthly_return)
+        future_value = monthly_savings * (((1 + monthly_return)**months - 1) / monthly_return)
         
+        st.markdown(f"""
+        <div class="card">
+            <h4>Prognose</h4>
+            <div class="metric-value">{future_value:,.0f}€</div>
+            <div class="metric-label">Zukünftiges Vermögen</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
         # Diagramm
         growth = []
         for year in range(years + 1):
             months = year * 12
-            value = current_rate * (((1 + monthly_return)**months - 1) / monthly_return)
+            value = monthly_savings * (((1 + monthly_return)**months - 1) / monthly_return)
             growth.append(value)
         
         fig = go.Figure()
@@ -256,54 +224,132 @@ def dashboard():
             x=list(range(years + 1)),
             y=growth,
             mode="lines+markers",
-            name="Prognose",
-            line=dict(color="#00d2ff", width=4),
+            name="Vermögensentwicklung",
+            line=dict(color=var(--accent), width=3),
             hovertemplate="Jahr %{x}: %{y:,.0f}€"
         ))
-        fig.add_hline(y=target_wealth, line_dash="dash", line_color="#ffca28", 
-                      annotation_text="Zielvermögen", annotation_position="bottom right")
         
         fig.update_layout(
             title="Vermögensentwicklung",
             xaxis_title="Jahre",
             yaxis_title="Vermögen (€)",
             template="plotly_dark",
-            height=400,
+            height=350,
             margin=dict(l=0, r=0, b=0, t=40)
         )
         st.plotly_chart(fig, use_container_width=True)
     
-    with col3:
-        st.markdown("### Optimierungsvorschlag")
-        optimized_rate = math.ceil(target_wealth / (((1 + monthly_return)**months - 1) / monthly_return))
-        difference = optimized_rate - current_rate
-        
-        st.markdown(f"""
-        <div class="card">
-            <h4>🚀 Empfohlene Sparrate</h4>
-            <div style="font-size:2.5rem; font-weight:700; color:#00d2ff; text-align:center; margin:10px 0;">
-                {optimized_rate:,.0f}€
-            </div>
-            <p style="text-align:center; font-size:1.1rem;">
-                {f"+{difference:,.0f}€" if difference > 0 else "Keine Änderung"}
-            </p>
-            
-            <h4>📅 Erreichbares Ziel in</h4>
-            <div style="font-size:2rem; font-weight:700; color:#00d2ff; text-align:center; margin:10px 0;">
-                {years} Jahren
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        if st.button("Sparplan optimieren", key="optimize_plan"):
-            st.success(f"Sparplan auf {optimized_rate}€ monatlich aktualisiert!")
-    
     # Portfolio-Übersicht
-    st.subheader("📊 Portfolio Analyse")
-    col1, col2 = st.columns([1, 2])
+    st.subheader("Portfolio Analyse")
+    portfolio_data = pd.DataFrame({
+        "Asset": ["ETFs", "Aktien", "Krypto", "Immobilien", "Cash"],
+        "Anteil (%)": [45, 20, 15, 15, 5],
+        "Rendite (%)": [7.2, 4.5, -2.3, 3.8, 0.5]
+    })
+    st.dataframe(portfolio_data, use_container_width=True, hide_index=True)
+    
+    # Assetverteilung
+    fig = px.pie(
+        portfolio_data, 
+        names="Asset", 
+        values="Anteil (%)",
+        title="Assetverteilung",
+        color_discrete_sequence=["#2575fc", "#1c65e0", "#1554b8", "#0e4490", "#073368"]
+    )
+    fig.update_layout(template="plotly_dark")
+    st.plotly_chart(fig, use_container_width=True)
+
+def sparplan_rechner():
+    """Sparplan Rechner"""
+    st.title("📈 Sparplan Rechner")
+    
+    col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("### Aktuelle Verteilung")
+        st.subheader("Eingaben")
+        monthly_savings = st.number_input("Monatliche Sparrate (€)", 50, 5000, 300)
+        start_capital = st.number_input("Startkapital (€)", 0, 1000000, 5000)
+        years = st.slider("Anlagezeitraum (Jahre)", 5, 40, 20)
+        return_rate = st.slider("Erwartete Rendite p.a. (%)", 1.0, 15.0, 6.5)
+        inflation = st.slider("Erwartete Inflation p.a. (%)", 0.0, 10.0, 2.0)
+        savings_increase = st.slider("Jährliche Sparerhöhung (%)", 0.0, 10.0, 2.0)
+    
+    # Berechnung
+    if st.button("Berechnen"):
+        with st.spinner("Berechne..."):
+            # Daten für die Darstellung
+            jahre = list(range(years + 1))
+            vermoegen = [start_capital]
+            inflationsbereinigt = [start_capital]
+            sparrate = monthly_savings * 12
+            
+            for jahr in range(1, years + 1):
+                # Wertentwicklung
+                wertentwicklung = vermoegen[-1] * (1 + return_rate/100)
+                
+                # Sparrate mit Dynamik
+                jaehrliche_sparrate = sparrate * (1 + savings_increase/100)**(jahr-1)
+                
+                # Neues Vermögen
+                neues_vermoegen = wertentwicklung + jaehrliche_sparrate
+                vermoegen.append(neues_vermoegen)
+                
+                # Inflationsbereinigt
+                inflationsfaktor = (1 - inflation/100)**jahr
+                inflationsbereinigt.append(neues_vermoegen * inflationsfaktor)
+            
+            # Diagramm erstellen
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(
+                x=jahre, 
+                y=vermoegen,
+                mode="lines+markers",
+                name="Nominalwert",
+                line=dict(color="#2575fc", width=3)
+            ))
+            fig.add_trace(go.Scatter(
+                x=jahre, 
+                y=inflationsbereinigt,
+                mode="lines+markers",
+                name="Inflationsbereinigt",
+                line=dict(color="#1c65e0", width=3)
+            ))
+            
+            fig.update_layout(
+                title="Vermögensentwicklung",
+                xaxis_title="Jahre",
+                yaxis_title="Vermögen (€)",
+                hovermode="x unified",
+                height=500,
+                template="plotly_dark"
+            )
+            
+            with col2:
+                st.subheader("Ergebnisse")
+                st.plotly_chart(fig, use_container_width=True)
+                
+                # Ergebnisse anzeigen
+                endvermoegen = vermoegen[-1]
+                realwert = inflationsbereinigt[-1]
+                
+                st.markdown(f"""
+                <div class="card">
+                    <h4>Zusammenfassung</h4>
+                    <p>Endvermögen nominal: <strong>{endvermoegen:,.0f}€</strong></p>
+                    <p>Kaufkraft (inflationsbereinigt): <strong>{realwert:,.0f}€</strong></p>
+                    <p>Eingezahlte Sparbeiträge: <strong>{(monthly_savings * 12 * years):,.0f}€</strong></p>
+                    <p>Zinseszins-Effekt: <strong>{(endvermoegen - start_capital - (monthly_savings * 12 * years)):,.0f}€</strong></p>
+                </div>
+                """, unsafe_allow_html=True)
+
+def portfolio_analyse():
+    """Portfolio Analyse"""
+    st.title("📊 Portfolio Analyse")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.subheader("Aktuelles Portfolio")
         etf = st.slider("ETF-Anteil (%)", 0, 100, 45)
         aktien = st.slider("Einzelaktien (%)", 0, 100, 20)
         krypto = st.slider("Krypto (%)", 0, 100, 15)
@@ -316,11 +362,13 @@ def dashboard():
             st.error(f"Summe muss 100% betragen! Aktuell: {total}%")
     
     with col2:
+        st.subheader("Optimierungsvorschlag")
+        
         # Portfolio-Daten
         data = {
             "Assetklasse": ["ETFs", "Aktien", "Krypto", "Immobilien", "Andere"],
             "Aktuell": [etf, aktien, krypto, immobilien, andere],
-            "Empfohlen": [50, 15, 5, 25, 5]
+            "Empfohlen": [50, 20, 10, 15, 5]
         }
         
         # Diagramm
@@ -329,13 +377,13 @@ def dashboard():
             x=data["Assetklasse"],
             y=data["Aktuell"],
             name="Aktuell",
-            marker_color="#6a11cb"
+            marker_color="#2575fc"
         ))
         fig.add_trace(go.Bar(
             x=data["Assetklasse"],
             y=data["Empfohlen"],
             name="Empfohlen",
-            marker_color="#00d2ff"
+            marker_color="#1c65e0"
         ))
         
         fig.update_layout(
@@ -349,120 +397,104 @@ def dashboard():
         # Empfehlungen
         st.markdown("""
         <div class="card">
-            <h4>📈 Optimierungsempfehlungen</h4>
+            <h4>Optimierungsempfehlungen</h4>
             <ul>
                 <li>ETF-Anteil auf 50% erhöhen</li>
-                <li>Krypto auf max. 5% reduzieren</li>
+                <li>Krypto auf max. 10% reduzieren</li>
                 <li>Immobilien-Exposure durch REITs erhöhen</li>
                 <li>Notfallfonds prüfen (3-6 Monatsausgaben)</li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
 
-# ===== KI-ASSISTENT =====
-def ki_assistant():
-    """Interaktiver KI-Vermögensassistent"""
-    st.title("🤖 NEXUS KI-Assistent")
-    st.subheader("Dein persönlicher Finanzberater 24/7")
+def ki_assistent():
+    """KI-Assistent"""
+    st.title("🤖 KI-Assistent")
     
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = []
     
-    # Beispiel-Fragen
+    # Chatverlauf
+    for msg in st.session_state.chat_history:
+        if msg["role"] == "user":
+            with st.chat_message("user"):
+                st.markdown(msg["content"])
+        else:
+            with st.chat_message("assistant"):
+                st.markdown(msg["content"])
+    
+    # Beispielfragen
     st.markdown("""
     <div class="card">
-        <h4>💡 Beispielfragen:</h4>
-        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px;">
-            <div style="background: rgba(106, 17, 203, 0.3); border-radius: 12px; padding: 8px 12px; cursor: pointer;"
-                 onclick="document.querySelector('input[aria-label=\\'Stelle deine Finanzfrage...\\']').value = 'Wie mit 500€ monatlich starten?';">
+        <h4>Beispielfragen:</h4>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
+            <div style="background: rgba(37, 117, 252, 0.2); border-radius: 8px; padding: 8px 12px;">
                 Wie mit 500€ monatlich starten?
             </div>
-            <div style="background: rgba(106, 17, 203, 0.3); border-radius: 12px; padding: 8px 12px; cursor: pointer;"
-                 onclick="document.querySelector('input[aria-label=\\'Stelle deine Finanzfrage...\\']').value = 'Welche ETFs sind jetzt am besten?';">
-                Welche ETFs sind jetzt am besten?
+            <div style="background: rgba(37, 117, 252, 0.2); border-radius: 8px; padding: 8px 12px;">
+                Welche ETFs sind empfehlenswert?
             </div>
-            <div style="background: rgba(106, 17, 203, 0.3); border-radius: 12px; padding: 8px 12px; cursor: pointer;"
-                 onclick="document.querySelector('input[aria-label=\\'Stelle deine Finanzfrage...\\']').value = 'Wie erreiche ich 100.000€?';">
-                Wie erreiche ich 100.000€?
-            </div>
-            <div style="background: rgba(106, 17, 203, 0.3); border-radius: 12px; padding: 8px 12px; cursor: pointer;"
-                 onclick="document.querySelector('input[aria-label=\\'Stelle deine Finanzfrage...\\']').value = 'Wie optimiere ich mein Portfolio?';">
+            <div style="background: rgba(37, 117, 252, 0.2); border-radius: 8px; padding: 8px 12px;">
                 Wie optimiere ich mein Portfolio?
             </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
     
-    # Chatverlauf
-    chat_container = st.container()
-    
     # Benutzereingabe
     if prompt := st.chat_input("Stelle deine Finanzfrage..."):
         # Benutzernachricht hinzufügen
-        st.session_state.chat_history.append({
-            "role": "user", 
-            "content": prompt,
-            "time": datetime.now().strftime("%H:%M")
-        })
+        st.session_state.chat_history.append({"role": "user", "content": prompt})
         
-        # KI-Antwort generieren
-        with st.spinner("KI analysiert deine Frage..."):
-            ai_response = get_ai_response(prompt)
+        with st.chat_message("user"):
+            st.markdown(prompt)
+        
+        # KI-Antwort generieren (simuliert)
+        with st.spinner("KI denkt nach..."):
+            time.sleep(1.5)
+            
+            finanzwissen = [
+                "Für den Einstieg empfehle ich: 60% MSCI World ETF, 20% Emerging Markets, 15% Technologie-ETF, 5% Krypto. Monatlich 300-500€ sparen.",
+                "Top ETFs 2024: iShares Core MSCI World (IE00B4L5Y983), Vanguard FTSE All-World (IE00B3RBWM25), Xtrackers MSCI World Technology (IE00BMVB5R75).",
+                "Portfolio-Optimierung: Erhöhen Sie den ETF-Anteil auf 50-60%, reduzieren Sie Einzelaktien auf 15-20%, und halten Sie Krypto unter 10%.",
+                "Für passive Einkommen: Dividenden-ETFs mit 3-5% Ausschüttung, REITs mit 4-7% Dividende, und Anleihen-ETFs. Ziel: 500-2000€ monatlich.",
+                "Kosten senken: Nutzen Sie Neobroker (1€/Sparplan), wählen Sie ETFs mit TER <0.2%, und vermeiden Sie aktiv gemanagte Fonds."
+            ]
+            
+            ai_response = random.choice(finanzwissen)
             
             # KI-Antwort hinzufügen
-            st.session_state.chat_history.append({
-                "role": "assistant", 
-                "content": ai_response,
-                "time": datetime.now().strftime("%H:%M")
-            })
-    
-    # Chatverlauf anzeigen
-    with chat_container:
-        for msg in st.session_state.chat_history:
-            if msg["role"] == "user":
-                with st.chat_message("user"):
-                    st.markdown(msg["content"])
-                    st.caption(f"Du - {msg['time']}")
-            else:
-                with st.chat_message("assistant"):
-                    st.markdown(msg["content"])
-                    st.caption(f"NEXUS KI - {msg['time']}")
+            st.session_state.chat_history.append({"role": "assistant", "content": ai_response})
+            
+            with st.chat_message("assistant"):
+                st.markdown(ai_response)
 
-# ===== SPAR-TIPPS =====
 def spar_tipps():
-    """Intelligente Spartipps mit personalisierten Empfehlungen"""
-    st.title("💡 Intelligente Spartipps")
-    st.subheader("Maximiere dein Sparpotential in allen Lebensbereichen")
+    """Spar-Tipps"""
+    st.title("💡 Spar-Tipps")
     
     # Kategorien
     categories = {
-        "🏠 Haushalt": [
+        "Haushalt": [
             "Smart Thermostat installieren - spart bis zu 15% Heizkosten",
             "LED-Beleuchtung komplett umstellen - 80% weniger Stromverbrauch",
             "Wassersparende Duschköpfe nutzen - reduziert Verbrauch um 40%",
             "Energieeffiziente Geräte der Klasse A+++ kaufen",
             "Stromfresser identifizieren mit Energiemonitor"
         ],
-        "🛒 Einkaufen": [
+        "Einkaufen": [
             "Cashback-Apps wie Shoop nutzen - bis zu 10% zurück",
             "Preisvergleichs-Tools vor jedem Kauf verwenden",
             "Saisonal und regional einkaufen - 30% günstiger",
             "Großpackungen bei häufig genutzten Produkten",
             "Einkaufslisten strikt einhalten - reduziert Impulskäufe"
         ],
-        "💰 Finanzen": [
+        "Finanzen": [
             "Bankgebühren vergleichen und wechseln - bis zu 100€/Jahr sparen",
             "Kreditkarten mit Cashback nutzen",
             "Versicherungen jährlich prüfen und optimieren",
             "Steuererklärung machen - durchschnittlich 1.000€ Rückerstattung",
             "Automatische Sparpläne einrichten - Pay yourself first"
-        ],
-        "📈 Investitionen": [
-            "Kostenlose Sparpläne bei Neobrokern nutzen",
-            "Steuerfreistellungsauftrag optimal ausnutzen",
-            "ETF-Portfolio mit max. 0.2% TER zusammenstellen",
-            "Regelmäßiges Rebalancing - 1x jährlich",
-            "Dividendenstrategie für passives Einkommen"
         ]
     }
     
@@ -478,14 +510,10 @@ def spar_tipps():
             with cols[i % 2]:
                 st.markdown(f"""
                 <div class="card">
-                    <div style="display: flex; align-items: start; gap: 15px;">
-                        <div style="font-size: 2rem; background: linear-gradient(90deg, var(--primary), var(--accent));
-                             -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-                            {i+1}
-                        </div>
+                    <div style="display: flex; align-items: start; gap: 10px;">
+                        <div style="font-size: 1.5rem; color: #2575fc;">•</div>
                         <div>
-                            <h4 style="margin-top: 0;">{tip.split(" - ")[0]}</h4>
-                            <p>{tip.split(" - ")[1] if " - " in tip else ""}</p>
+                            <p>{tip}</p>
                         </div>
                     </div>
                 </div>
@@ -494,156 +522,161 @@ def spar_tipps():
     # Personalisierte Empfehlung
     st.markdown("""
     <div class="card">
-        <h3>⭐ Personalisierte Empfehlung</h3>
-        <div style="display: flex; align-items: center; gap: 20px; padding: 15px; background: rgba(106, 17, 203, 0.2); border-radius: 12px;">
-            <div style="font-size: 3rem;">💡</div>
-            <div>
-                <h4 style="margin: 0;">Basierend auf deinem Profil</h4>
-                <p style="margin: 5px 0 0 0; font-size: 1.1rem;">
-                    Du könntest 
-                    <span style="color: var(--accent); font-weight: 600;">{random.randint(50, 150)}€ pro Monat</span> 
-                    sparen durch:
-                </p>
-                <ul>
-                    <li>{random.choice(["Bankwechsel", "Energieoptimierung", "Versicherungscheck", "Abokündigungen"])}</li>
-                    <li>{random.choice(["Steueroptimierung", "Cashback-Nutzung", "Großeinkäufe"])}</li>
-                </ul>
-            </div>
-        </div>
-        <div style="text-align: center; margin-top: 15px;">
-            <button style="background: linear-gradient(90deg, var(--primary), var(--accent));
-                        color: white; border: none; border-radius: 50px; padding: 12px 28px;
-                        font-weight: 600; font-size: 1.05rem; cursor: pointer;">
-                Sparplan optimieren
-            </button>
+        <h4>Personalisierte Empfehlung</h4>
+        <div style="padding: 15px; background: rgba(37, 117, 252, 0.1); border-radius: 8px; margin-top: 10px;">
+            <p>Basierend auf Ihrem Profil könnten Sie <strong>{random.randint(50, 150)}€ pro Monat</strong> sparen durch:</p>
+            <ul>
+                <li>{random.choice(["Bankwechsel", "Energieoptimierung", "Versicherungscheck"])}</li>
+                <li>{random.choice(["Steueroptimierung", "Abokündigungen", "Einkaufsoptimierung"])}</li>
+            </ul>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
-# ===== WEALTH ACADEMY =====
-def wealth_academy():
-    """Interaktive Finanzbildung"""
-    st.title("📚 Wealth Academy")
-    st.subheader("Baue dein Finanzwissen auf - Schritt für Schritt")
+def investment_strategien():
+    """Investment-Strategien"""
+    st.title("🚀 Investment-Strategien")
     
-    # Module
-    modules = [
-        {
-            "title": "💰 Grundlagen der Geldanlage",
-            "level": "Anfänger",
-            "progress": 35,
-            "icon": "💰",
-            "content": """
-            ### Lektion 1: Die Macht des Zinseszinses
-            - **Das achte Weltwunder**: Wie kleine Beträge zu großem Vermögen werden
-            - **Zeit ist Geld**: Warum du heute beginnen solltest
-            - **Praxisbeispiel**: 
-                - 100€ monatlich bei 7% Rendite
-                - Ergebnis nach 30 Jahren: **122.000€**
-            
-            **Interaktive Aufgabe:**
-            Berechne, wie viel 150€ monatlich bei 6% Rendite in 25 Jahren werden.
-            """
+    # Strategien
+    strategien = {
+        "Konservativ": {
+            "risiko": "Niedrig",
+            "rendite": "3-5% p.a.",
+            "portfolio": "70% Anleihen, 20% ETFs, 10% Cash",
+            "beschreibung": "Sicherheitsorientiert mit Fokus auf Kapitalerhalt"
         },
-        {
-            "title": "📈 ETF-Strategien",
-            "level": "Mittel",
-            "progress": 20,
-            "icon": "📈",
-            "content": """
-            ### Die 3 Säulen der ETF-Strategie
-            1. **Diversifikation**: Streuung über Märkte und Sektoren
-            2. **Kostenbewusstsein**: TER unter 0.2% anstreben
-            3. **Konsistenz**: Monatlich investieren, egal wie der Markt steht
-            
-            **Top-ETFs 2024:**
-            - MSCI World (ISIN: IE00B4L5Y983)
-            - NASDAQ-100 (ISIN: IE00B53SZB19)
-            - Global Clean Energy (ISIN: IE00B1XNHC34)
-            """
+        "Ausgewogen": {
+            "risiko": "Mittel",
+            "rendite": "5-7% p.a.",
+            "portfolio": "50% ETFs, 30% Anleihen, 15% Aktien, 5% Rohstoffe",
+            "beschreibung": "Balance zwischen Sicherheit und Wachstum"
         },
-        {
-            "title": "🏠 Immobilien vs. Aktien",
-            "level": "Mittel",
-            "progress": 10,
-            "icon": "🏠",
-            "content": """
-            | Parameter          | Immobilien       | Aktien           |
-            |--------------------|------------------|------------------|
-            | Renditeerwartung   | 3-5% p.a.        | 7-9% p.a.        |
-            | Liquidität         | Niedrig          | Hoch             |
-            | Mindestinvestment  | Hoch (>50.000€)  | Niedrig (>25€)   |
-            | Arbeitsaufwand     | Hoch             | Niedrig          |
-            | Diversifikation    | Schwierig        | Einfach          |
-            
-            💡 Für die meisten Anleger ist eine Kombination aus beiden sinnvoll!
-            """
+        "Wachstum": {
+            "risiko": "Hoch",
+            "rendite": "7-10% p.a.",
+            "portfolio": "70% ETFs, 20% Einzelaktien, 10% Krypto/REITs",
+            "beschreibung": "Langfristiges Wachstum mit höherem Risiko"
         }
-    ]
+    }
     
-    # Module anzeigen
-    for module in modules:
-        with st.expander(f"{module['icon']} {module['title']} - {module['level']} - {module['progress']}% abgeschlossen", expanded=False):
-            st.markdown(f"<div class='card'>{module['content']}</div>", unsafe_allow_html=True)
+    # Auswahl
+    selected_strategy = st.selectbox("Wählen Sie eine Strategie", list(strategien.keys()))
+    
+    if selected_strategy:
+        strat = strategien[selected_strategy]
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown(f"""
+            <div class="card">
+                <h3>{selected_strategy}</h3>
+                <p><strong>Risiko:</strong> {strat["risiko"]}</p>
+                <p><strong>Erwartete Rendite:</strong> {strat["rendite"]}</p>
+                <p><strong>Portfolio:</strong> {strat["portfolio"]}</p>
+                <p><strong>Beschreibung:</strong> {strat["beschreibung"]}</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with col2:
+            # Portfolio-Verteilung
+            portfolio = {
+                "Asset": [],
+                "Anteil": []
+            }
             
-            if "Berechne" in module["content"]:
-                col1, col2 = st.columns([1, 3])
-                with col1:
-                    capital = st.number_input("Monatliche Sparrate (€)", 50, 2000, 150, key=f"capital_{module['title']}")
-                    years = st.slider("Jahre", 5, 40, 25, key=f"years_{module['title']}")
-                    rate = st.slider("Rendite p.a. (%)", 1.0, 15.0, 6.0, 0.1, key=f"rate_{module['title']}")
+            # Parse Portfolio
+            parts = strat["portfolio"].split(",")
+            for part in parts:
+                asset = part.split("%")[1].strip()
+                anteil = int(part.split("%")[0].strip())
+                portfolio["Asset"].append(asset)
+                portfolio["Anteil"].append(anteil)
+            
+            # Diagramm
+            fig = px.pie(
+                portfolio,
+                names="Asset",
+                values="Anteil",
+                title=f"{selected_strategy} Portfolio",
+                color_discrete_sequence=["#2575fc", "#1c65e0", "#1554b8", "#0e4490"]
+            )
+            fig.update_layout(template="plotly_dark", height=400)
+            st.plotly_chart(fig, use_container_width=True)
+
+def finanzziele():
+    """Finanzziele"""
+    st.title("🎯 Finanzziele")
+    
+    # Zieleingabe
+    with st.form("ziel_formular"):
+        col1, col2 = st.columns(2)
+        with col1:
+            name = st.text_input("Zielname", placeholder="Eigenheim, Altersvorsorge")
+            zielbetrag = st.number_input("Zielbetrag (€)", 1000, 10000000, 50000)
+            prioritaet = st.selectbox("Priorität", ["Hoch", "Mittel", "Niedrig"])
+        
+        with col2:
+            deadline = st.date_input("Zieldatum", datetime.now() + timedelta(days=365*5))
+            aktuell_gespart = st.number_input("Aktuell gespart (€)", 0, 10000000, 5000)
+            monatliche_sparrate = st.number_input("Monatliche Sparrate (€)", 0, 5000, 500)
+        
+        if st.form_submit_button("Ziel speichern"):
+            st.success("Ziel gespeichert!")
+    
+    # Zielübersicht
+    if 'ziele' not in st.session_state:
+        st.session_state.ziele = []
+    
+    if st.session_state.ziele:
+        st.subheader("Ihre Finanzziele")
+        for ziel in st.session_state.ziele:
+            with st.container():
+                st.markdown(f"#### {ziel['name']} ({ziel['prioritaet']} Priorität)")
                 
-                if st.button("Berechnen", key=f"btn_{module['title']}"):
-                    monthly_rate = rate / 100 / 12
-                    months = years * 12
-                    result = capital * (((1 + monthly_rate)**months - 1) / monthly_rate)
-                    st.success(f"Ergebnis nach {years} Jahren: **{result:,.0f}€**")
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.metric("Zielbetrag", f"{ziel['zielbetrag']:,.0f}€")
+                    st.metric("Aktueller Stand", f"{ziel['aktuell_gespart']:,.0f}€")
+                
+                with col2:
+                    # Fortschrittsbalken
+                    progress = min(1.0, ziel['aktuell_gespart'] / ziel['zielbetrag'])
+                    st.markdown(f"**Fortschritt** ({progress*100:.1f}%)")
+                    st.progress(progress)
 
 # ===== SIDEBAR NAVIGATION =====
 with st.sidebar:
     st.markdown("""
-    <div style="text-align: center; margin-bottom: 30px;">
-        <h1 style="background: linear-gradient(90deg, var(--accent), var(--secondary));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            margin-bottom: 5px;">NEXUS</h1>
-        <p style="font-size: 1.2rem; opacity: 0.9;">Wealth Management</p>
+    <div style="text-align: center; margin-bottom: 20px;">
+        <h1 style="color: #2575fc; margin-bottom: 5px;">NEXUS</h1>
+        <p style="font-size: 1.1rem; opacity: 0.9;">Financial Planning</p>
     </div>
     """, unsafe_allow_html=True)
     
     # Navigation
-    page_options = {
-        "📊 Dashboard": dashboard,
-        "🤖 KI-Assistent": ki_assistant,
-        "💡 Spar-Tipps": spar_tipps,
-        "📚 Wealth Academy": wealth_academy
-    }
-    
-    page = st.radio("Navigation", list(page_options.keys()))
-    
-    # Fortschrittsbalken
-    st.divider()
-    st.markdown("### Dein Fortschritt")
-    st.markdown("Finanzielle Freiheit")
-    st.progress(65)
-    st.caption("65% erreicht")
-    
-    # Community
-    st.divider()
-    st.markdown("### Community")
-    col1, col2 = st.columns(2)
-    col1.metric("Mitglieder", "12.458")
-    col2.metric("Aktive", "3.892")
-    
-    # Footer
-    st.divider()
-    st.caption("© 2025 NEXUS Wealth GmbH")
-    st.caption("Dein Weg zur finanziellen Freiheit")
+    page = st.radio("Navigation", [
+        "📊 Dashboard", 
+        "📈 Sparplan Rechner", 
+        "📊 Portfolio Analyse", 
+        "🤖 KI-Assistent",
+        "💡 Spar-Tipps",
+        "🚀 Investment-Strategien",
+        "🎯 Finanzziele"
+    ])
 
 # ===== HAUPTPROGRAMM =====
 if __name__ == "__main__":
-    if "chat_history" not in st.session_state:
-        st.session_state.chat_history = []
-    
-    # Aktuelle Seite anzeigen
-    if page in page_options:
-        page_options[page]()
+    if page == "📊 Dashboard":
+        dashboard()
+    elif page == "📈 Sparplan Rechner":
+        sparplan_rechner()
+    elif page == "📊 Portfolio Analyse":
+        portfolio_analyse()
+    elif page == "🤖 KI-Assistent":
+        ki_assistent()
+    elif page == "💡 Spar-Tipps":
+        spar_tipps()
+    elif page == "🚀 Investment-Strategien":
+        investment_strategien()
+    elif page == "🎯 Finanzziele":
+        finanzziele()

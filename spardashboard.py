@@ -398,5 +398,54 @@ def ebook_page():
             income = st.number_input("Nettoeinkommen (€)", 1000, 20000, 3000)
             expenses = st.number_input("Lebenshaltungskosten (€)", 500, 10000, 1800)
             savings = income - expenses
-            savings_rate = savings / income * 100 if income != 0 else 0
+            savings_rate = savings / income * 100
             st.metric("Sparquote", f"{savings_rate:.1f}%", f"{savings:,.0f}€")
+    
+    with col2:
+        with st.container():
+            st.markdown("### 🏆 FIRE-Erreichbarkeit")
+            annual_expenses = st.number_input("Jährliche Ausgaben (€)", 10000, 100000, 30000)
+            current_assets = st.number_input("Aktuelles Vermögen (€)", 0, 1000000, 50000)
+            monthly_savings = st.number_input("Monatliche Sparrate (€)", 100, 5000, 1000)
+            
+            fire_target = annual_expenses * 25
+            years = np.nper(0.06/12, -monthly_savings, -current_assets, fire_target) / 12
+            st.metric("Finanzielle Freiheit erreicht in", f"{years:.1f} Jahren")
+    
+    with col3:
+        with st.container():
+            st.markdown("### 💰 Steuerersparnis-Simulator")
+            capital_gains = st.number_input("Kapitalerträge (€)", 0, 100000, 5000)
+            tax_before = capital_gains * 0.26375
+            tax_after = max(0, (capital_gains - 1000) * 0.26375)
+            savings = tax_before - tax_after
+            
+            st.metric("Steuerlast ohne Optimierung", f"{tax_before:,.0f}€")
+            st.metric("Mit Freistellungsauftrag", f"{tax_after:,.0f}€")
+            st.metric("Ersparnis", f"{savings:,.0f}€", delta_color="inverse")
+
+# ===== HAUPTAPPLIKATION =====
+pages = {
+    "📊 Dashboard": dashboard_page,
+    "🎯 Sparziele": goals_page,
+    "📚 Premium Sparguide": ebook_page
+}
+
+# Seitenauswahl in der Sidebar
+with st.sidebar:
+    st.title("🔥 FIREFLY")
+    page = st.radio("Navigation", list(pages.keys()))
+    
+    st.markdown("---")
+    st.markdown("### Dein Fortschritt")
+    st.progress(0.65, text="Finanzielle Freiheit: 65%")
+    st.caption("🔥 12 von 18 Meilensteinen erreicht")
+    
+    st.markdown("---")
+    st.markdown("### 🔔 Benachrichtigungen")
+    st.info("🎉 Sparziel 'Notfallfonds' erreicht!")
+    st.warning("⚠️ Portfolio-Rebalancing empfohlen")
+    st.info("💡 Neues E-Book-Kapitel verfügbar: Steuertricks")
+
+# Aktive Seite anzeigen
+pages[page]()
